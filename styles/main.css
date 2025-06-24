@@ -278,7 +278,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-content {
-	  padding: 8rem 1rem 8rem; background:url("/images/hero.jpg") no-repeat center center/cover;
+	  padding: 8rem 1rem 8rem; background:url("./images/hero.jpg") no-repeat center center/cover;
 color:  whitesmoke;	       
 
     position: relative;
