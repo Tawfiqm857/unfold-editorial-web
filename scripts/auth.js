@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         localStorage.setItem('authRemember', 'true');
                     }
                     
-                    // Redirect to React app
+                    // Redirect to dashboard
                     setTimeout(() => {
-                        window.location.href = '/dashboard';
+                        window.location.href = 'dashboard.html';
                     }, 1500);
                 }
             });
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.textContent = 'Creating account...';
             submitBtn.disabled = true;
             
-            const redirectUrl = `${window.location.origin}/dashboard`;
+            const redirectUrl = `${window.location.origin}/dashboard.html`;
             
             supabase.auth.signUp({
                 email: email,
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             showNotification(`${action} successful! Redirecting...`, 'success');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html';
             }, 1500);
         }, 2000);
     }
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (remember && currentPath.includes('auth.html')) {
             showNotification('Welcome back!', 'success');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'dashboard.html';
             }, 1000);
         }
     }

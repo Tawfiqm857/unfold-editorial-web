@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Magazine - Urban Nomad Freaks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static-styles.css">
+    <link rel="icon" href="public/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link sr-only">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="header-content">
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">
+                        <span>UNF</span>
+                    </div>
+                    <span class="logo-text">Urban Nomad Freaks</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="table-of-contents.html" class="nav-link">Table of Contents</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <button class="btn btn-sm" id="signOutBtn">Sign Out</button>
+                </nav>
+
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
+                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-content">
+                <a href="index.html" class="mobile-nav-link">Home</a>
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
+                <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                <div class="mobile-nav-divider"></div>
+                <button class="btn btn-primary mobile-nav-btn" id="mobileSignOutBtn">Sign Out</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content order-page" id="main-content">
+        <!-- Loading State -->
+        <div class="order-loading" id="orderLoading">
+            <div class="loading-spinner"></div>
+            <p>Loading order form...</p>
+        </div>
+
+        <!-- Order Content -->
+        <div class="order-container" id="orderContent" style="display: none;">
+            <div class="order-header">
+                <h1 class="order-title">Order Magazine</h1>
+                <p class="order-subtitle">Get your printed copy of Urban Nomad Freaks magazine delivered to your doorstep</p>
+            </div>
+
+            <div class="order-layout">
+                <!-- Order Summary -->
+                <div class="order-card">
+                    <div class="card-header">
+                        <h3 class="card-title">🛒 Order Summary</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="order-item">
+                            <div class="item-details">
+                                <h4>Urban Nomad Freaks Magazine (Printed)</h4>
+                                <p>Latest issue with premium print quality</p>
+                            </div>
+                            <div class="item-price">
+                                <p class="price">₦25.00</p>
+                                <p class="price-label">per copy</p>
+                            </div>
+                        </div>
+                        <div class="order-total">
+                            <div class="total-line">
+                                <span>Quantity: </span>
+                                <span id="summaryQuantity">1</span>
+                            </div>
+                            <div class="total-line total-price">
+                                <span>Total: </span>
+                                <span id="summaryTotal">₦25.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Form -->
+                <div class="order-card order-form-card">
+                    <div class="card-header">
+                        <h3 class="card-title">💳 Delivery Information</h3>
+                        <p class="card-description">Please provide your delivery address for shipping</p>
+                    </div>
+                    <div class="card-content">
+                        <form id="orderForm" class="order-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="quantity">Quantity</label>
+                                    <select id="quantity" name="quantity" required>
+                                        <option value="1">1 copy</option>
+                                        <option value="2">2 copies</option>
+                                        <option value="3">3 copies</option>
+                                        <option value="4">4 copies</option>
+                                        <option value="5">5 copies</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="fullName">Full Name</label>
+                                    <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" name="city" required placeholder="Enter your city">
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label for="address">Delivery Address</label>
+                                    <input type="text" id="address" name="address" required placeholder="Enter your complete delivery address">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" name="state" required placeholder="Enter your state">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <select id="country" name="country" required>
+                                        <option value="Nigeria">Nigeria</option>
+                                        <option value="Ghana">Ghana</option>
+                                        <option value="Kenya">Kenya</option>
+                                        <option value="South Africa">South Africa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Error Message -->
+                            <div class="error-message" id="orderError" style="display: none;"></div>
+
+                            <button type="submit" class="btn btn-primary btn-lg order-submit-btn" id="orderSubmitBtn">
+                                <span class="btn-text">Proceed to Payment (₦25.00)</span>
+                                <div class="btn-loading" style="display: none;">
+                                    <div class="loading-spinner small"></div>
+                                    <span>Processing...</span>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-xl">
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 Urban Nomad Freaks. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static-script.js"></script>
+    <script src="scripts/order.js"></script>
+</body>
+</html>
