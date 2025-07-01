@@ -9,181 +9,254 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      article_authors: {
+      admins: {
         Row: {
-          article_slug: string
-          author_id: string
-          created_at: string
-          id: string
+          created_at: string | null
+          user_id: string
         }
         Insert: {
-          article_slug: string
-          author_id: string
-          created_at?: string
-          id?: string
+          created_at?: string | null
+          user_id: string
         }
         Update: {
-          article_slug?: string
-          author_id?: string
+          created_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cart_items: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          quantity: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
           created_at?: string
           id?: string
+          product_id: string
+          quantity?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          quantity?: number
+          updated_at?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "article_authors_author_id_fkey"
-            columns: ["author_id"]
+            foreignKeyName: "cart_items_product_id_fkey"
+            columns: ["product_id"]
             isOneToOne: false
-            referencedRelation: "authors"
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
       }
-      authors: {
-        Row: {
-          bio: string | null
-          created_at: string
-          id: string
-          name: string
-          profile_image_url: string | null
-          social_links: Json | null
-          updated_at: string
-          website_url: string | null
-        }
-        Insert: {
-          bio?: string | null
-          created_at?: string
-          id?: string
-          name: string
-          profile_image_url?: string | null
-          social_links?: Json | null
-          updated_at?: string
-          website_url?: string | null
-        }
-        Update: {
-          bio?: string | null
-          created_at?: string
-          id?: string
-          name?: string
-          profile_image_url?: string | null
-          social_links?: Json | null
-          updated_at?: string
-          website_url?: string | null
-        }
-        Relationships: []
-      }
       orders: {
         Row: {
+          buyer_id: string
           created_at: string
-          currency: string
-          delivery_address: Json | null
           id: string
-          order_number: string
-          order_status: string
           payment_status: string
-          product_type: string
+          product_id: string
           quantity: number
-          stripe_payment_intent_id: string | null
+          seller_id: string
+          status: string
           total_amount: number
           updated_at: string
-          user_id: string | null
         }
         Insert: {
+          buyer_id: string
           created_at?: string
-          currency?: string
-          delivery_address?: Json | null
           id?: string
-          order_number: string
-          order_status?: string
           payment_status?: string
-          product_type?: string
+          product_id: string
           quantity?: number
-          stripe_payment_intent_id?: string | null
+          seller_id: string
+          status?: string
           total_amount: number
           updated_at?: string
-          user_id?: string | null
         }
         Update: {
+          buyer_id?: string
           created_at?: string
-          currency?: string
-          delivery_address?: Json | null
           id?: string
-          order_number?: string
-          order_status?: string
           payment_status?: string
-          product_type?: string
+          product_id?: string
           quantity?: number
-          stripe_payment_intent_id?: string | null
+          seller_id?: string
+          status?: string
           total_amount?: number
           updated_at?: string
-          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          location: string | null
+          name: string
+          owner_id: string
+          price: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          name: string
+          owner_id: string
+          price: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          name?: string
+          owner_id?: string
+          price?: number
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
       profiles: {
         Row: {
-          address: string | null
-          city: string | null
-          country: string | null
+          avatar_url: string | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
+          location: string | null
           phone: string | null
-          state: string | null
           updated_at: string
         }
         Insert: {
-          address?: string | null
-          city?: string | null
-          country?: string | null
+          avatar_url?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id: string
+          location?: string | null
           phone?: string | null
-          state?: string | null
           updated_at?: string
         }
         Update: {
-          address?: string | null
-          city?: string | null
-          country?: string | null
+          avatar_url?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
+          location?: string | null
           phone?: string | null
-          state?: string | null
           updated_at?: string
         }
         Relationships: []
       }
-      purchases: {
+      swap_requests: {
         Row: {
           created_at: string
           id: string
-          magazine_issue: string
-          payment_id: string | null
-          payment_status: string
-          price: number
+          message: string
+          product_id: string
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          product_id: string
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          product_id?: string
+          requester_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "swap_requests_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      table_name: {
+        Row: {
+          data: Json | null
+          id: number
+          inserted_at: string
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          data?: Json | null
+          id?: number
+          inserted_at?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          data?: Json | null
+          id?: number
+          inserted_at?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          magazine_issue: string
-          payment_id?: string | null
-          payment_status?: string
-          price: number
+          role?: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
-          magazine_issue?: string
-          payment_id?: string | null
-          payment_status?: string
-          price?: number
+          role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
         }
         Relationships: []
@@ -193,13 +266,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      generate_order_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -314,6 +390,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
