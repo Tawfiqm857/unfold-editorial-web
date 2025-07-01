@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNFOLD MAGAZINE - A Bold New Space</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static-styles.css">
+    <link rel="icon" href="public/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="header-content">
+                <!-- Logo -->
+                <a href="static-index.html" class="logo">
+                    <div class="logo-icon">
+                        <span>UNF</span>
+                    </div>
+                    <span class="logo-text">Urban Nomad Freaks</span>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="nav-desktop">
+                    <a href="static-index.html" class="nav-link active">Home</a>
+                    <a href="static-about.html" class="nav-link">About</a>
+                    <a href="static-table-of-contents.html" class="nav-link">Table of Contents</a>
+                    <a href="static-auth.html" class="btn btn-sm">Sign In</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false">
+                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-content">
+                <a href="static-index.html" class="mobile-nav-link">Home</a>
+                <a href="static-about.html" class="mobile-nav-link">About</a>
+                <a href="static-table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
+                <div class="mobile-nav-divider"></div>
+                <a href="static-auth.html" class="btn btn-primary mobile-nav-btn">Sign In</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" id="main-content">
+        <!-- Hero Banner -->
+        <section class="hero-banner animate-fade-in">
+            <div class="container-xl">
+                <div class="hero-content">
+                    <h1 class="hero-title animate-slide-in-left">UNFOLD</h1>
+                    <p class="hero-subtitle animate-slide-in-right animation-delay-200">
+                        A bold new space where stories rise, style speaks, and every page drips with purpose and pulse.
+                    </p>
+                    <div class="hero-buttons animate-fade-in animation-delay-400">
+                        <a href="static-table-of-contents.html" class="btn btn-outline">Explore</a>
+                        <a href="static-about.html" class="btn btn-primary">About Us</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Article -->
+        <section class="featured-article animate-fade-in animation-delay-600">
+            <div class="container-xl">
+                <div class="featured-grid">
+                    <div class="featured-content">
+                        <a href="category-special-issue.html" class="featured-category">Special Issue</a>
+                        <a href="article-nigeria-youth-entrepreneurship.html">
+                            <h2 class="featured-title">Nigeria's Youth Entrepreneurship Revolution</h2>
+                        </a>
+                        <p class="featured-excerpt">
+                            They say the streets are tough, the economy is unpredictable, and the job market is tighter than a closed fist. But if there's one thing young Nigerians have mastered, it's turning pressure into diamonds.
+                        </p>
+                        <div class="featured-meta">
+                            <span>By Merit Ikechikwu</span>
+                            <span class="meta-separator">•</span>
+                            <time datetime="2025-05-18">May 18, 2025</time>
+                        </div>
+                        <a href="article-nigeria-youth-entrepreneurship.html" class="featured-read-more">
+                            Read Article
+                            <svg class="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <a href="article-nigeria-youth-entrepreneurship.html" class="featured-image-link">
+                        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Nigeria's Youth Entrepreneurship Revolution" 
+                             class="featured-image">
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Editorial Team Highlight -->
+        <section class="editorial-team animate-fade-in">
+            <div class="container-xl">
+                <h2 class="section-title">Meet the Editorial Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Bashir Suleiman">
+                        </div>
+                        <h3 class="member-name">Bashir Suleiman</h3>
+                        <p class="member-role">Editor-in-Chief</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Merit Ikechukwu">
+                        </div>
+                        <h3 class="member-name">Merit Ikechukwu</h3>
+                        <p class="member-role">Managing Editor</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Shahid Abdullahi">
+                        </div>
+                        <h3 class="member-name">Shahid Abdullahi</h3>
+                        <p class="member-role">Content Director</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Promise Jonathan">
+                        </div>
+                        <h3 class="member-name">Promise Jonathan</h3>
+                        <p class="member-role">Art Direction</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Recent Articles -->
+        <section class="recent-articles animate-fade-in">
+            <div class="container-xl">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Stories</h2>
+                </div>
+                
+                <div class="articles-grid">
+                    <article class="article-card featured-card animate-fade-in">
+                        <a href="article-sheep-streetwear.html" class="article-image-link">
+                            <div class="article-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1525562723836-dca67a71d5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1374&q=80" 
+                                     alt="S.H.E.E.P: Superior Humans Elevating Everyone's Potential" 
+                                     class="article-image">
+                                <div class="article-category-badge">
+                                    <span>Fashion</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="article-content">
+                            <a href="article-sheep-streetwear.html">
+                                <h3 class="article-title">S.H.E.E.P: Superior Humans Elevating Everyone's Potential</h3>
+                            </a>
+                            <p class="article-meta">
+                                By Bashir Suleiman • May 15, 2025
+                            </p>
+                            <p class="article-excerpt">
+                                In a world where style is often just about looking good, SHEEP dares to be different. It's not just another streetwear label—it's a bold declaration, stitched into cotton and culture.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card animate-fade-in animation-delay-100">
+                        <a href="article-afrobeats-evolution.html" class="article-image-link">
+                            <div class="article-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1619983081563-430f63602796?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" 
+                                     alt="Afrobeats to the World: The Evolution of Nigerian Music" 
+                                     class="article-image">
+                                <div class="article-category-badge">
+                                    <span>Music</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="article-content">
+                            <a href="article-afrobeats-evolution.html">
+                                <h3 class="article-title">Afrobeats to the World: The Evolution of Nigerian Music</h3>
+                            </a>
+                            <p class="article-meta">
+                                By Shahid Abdullahi • May 12, 2025
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card animate-fade-in animation-delay-200">
+                        <a href="article-unfold-playlist.html" class="article-image-link">
+                            <div class="article-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" 
+                                     alt="Unfold Afrobeat Playlist" 
+                                     class="article-image">
+                                <div class="article-category-badge">
+                                    <span>Music</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="article-content">
+                            <a href="article-unfold-playlist.html">
+                                <h3 class="article-title">Unfold Afrobeat Playlist</h3>
+                            </a>
+                            <p class="article-meta">
+                                By Shahid Abdullahi • May 10, 2025
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card animate-fade-in animation-delay-300">
+                        <a href="article-cruise-control.html" class="article-image-link">
+                            <div class="article-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" 
+                                     alt="Cruise Control: Dream Destinations" 
+                                     class="article-image">
+                                <div class="article-category-badge">
+                                    <span>Travel</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="article-content">
+                            <a href="article-cruise-control.html">
+                                <h3 class="article-title">Cruise Control: Dream Destinations You Can't Miss</h3>
+                            </a>
+                            <p class="article-meta">
+                                By Yusufari • May 8, 2025
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="article-card animate-fade-in animation-delay-400">
+                        <a href="article-faces-future.html" class="article-image-link">
+                            <div class="article-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671d66?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80" 
+                                     alt="Faces of the Future" 
+                                     class="article-image">
+                                <div class="article-category-badge">
+                                    <span>People</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="article-content">
+                            <a href="article-faces-future.html">
+                                <h3 class="article-title">Faces of the Future: Young Nigerians Leading the Wave</h3>
+                            </a>
+                            <p class="article-meta">
+                                By Aaron Ahmadu • May 5, 2025
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Newsletter CTA -->
+        <section class="newsletter-cta animate-fade-in">
+            <div class="container-xl">
+                <div class="newsletter-content">
+                    <h2 class="newsletter-title">Subscribe to Our Newsletter</h2>
+                    <p class="newsletter-subtitle">
+                        Get the latest articles, insights, and stories delivered to your inbox weekly.
+                    </p>
+                    
+                    <form class="newsletter-form" id="newsletterForm">
+                        <div class="newsletter-input-group">
+                            <input type="email" 
+                                   placeholder="Your email address" 
+                                   class="newsletter-input"
+                                   required>
+                            <button type="submit" class="btn btn-primary">Subscribe</button>
+                        </div>
+                    </form>
+                    
+                    <p class="newsletter-disclaimer">
+                        By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Featured Quote -->
+        <section class="featured-quote animate-fade-in">
+            <div class="container-lg">
+                <blockquote class="quote-text">
+                    "Born in the hustle, raised by resistance. We're the sunrise after every storm."
+                </blockquote>
+            </div>
+        </section>
+        
+        <!-- Special Issue Banner -->
+        <section class="special-issue animate-fade-in">
+            <div class="container-xl">
+                <h2 class="section-title">SPECIAL ISSUE</h2>
+                
+                <div class="special-issue-content">
+                    <div class="special-issue-inner">
+                        <h3 class="special-issue-title">NIGERIA'S YOUTH ENTREPRENEURSHIP REVOLUTION</h3>
+                        <p class="special-issue-description">
+                            In this special issue, we dive into the stories, challenges, and triumphs of the next generation of Nigerian business leaders, 
+                            exploring how they are shaping the future of the country's economy and culture.
+                        </p>
+                        <a href="article-nigeria-youth-entrepreneurship.html" class="btn btn-primary btn-lg">
+                            Read More
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Playlist Section -->
+        <section class="playlist-section animate-fade-in">
+            <div class="container-xl">
+                <div class="playlist-grid">
+                    <div class="playlist-content">
+                        <h2 class="playlist-title">UNFOLD AFROBEAT PLAYLIST</h2>
+                        <p class="playlist-description">
+                            Dive into the rhythm and energy of the best Afrobeats tracks that are defining the sound of a generation.
+                        </p>
+                        <a href="article-unfold-playlist.html" class="btn btn-outline">
+                            Explore Playlist
+                        </a>
+                    </div>
+                    <div class="playlist-tracks">
+                        <ol class="tracks-list">
+                            <li>Wizkid – "Kese"</li>
+                            <li>Rema – "Baby (Is It a Crime)"</li>
+                            <li>Davido – "With You" ft. Omah Lay</li>
+                            <li>Asake – "Why Love"</li>
+                            <li>Zlatan – "Better" ft. Fola</li>
+                            <li class="more-tracks">+ 15 more tracks</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-xl">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <span>UNF</span>
+                        </div>
+                        <span class="logo-text">Urban Nomad Freaks</span>
+                    </div>
+                    <p class="footer-description">
+                        A bold new space where stories rise, style speaks, and every page drips with purpose and pulse.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="static-about.html">About</a></li>
+                        <li><a href="static-table-of-contents.html">Table of Contents</a></li>
+                        <li><a href="category-fashion.html">Fashion</a></li>
+                        <li><a href="category-music.html">Music</a></li>
+                        <li><a href="category-travel.html">Travel</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="category-special-issue.html">Special Issue</a></li>
+                        <li><a href="category-people.html">People</a></li>
+                        <li><a href="category-culture.html">Culture</a></li>
+                        <li><a href="category-lifestyle.html">Lifestyle</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" target="_blank">Instagram</a></li>
+                        <li><a href="#" target="_blank">Twitter</a></li>
+                        <li><a href="#" target="_blank">LinkedIn</a></li>
+                        <li><a href="static-auth.html">Sign In</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 UNFOLD MAGAZINE. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <a href="static-table-of-contents.html" class="floating-btn" aria-label="Table of Contents">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+            </svg>
+        </a>
+        <button class="floating-btn theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="m21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <script src="static-script.js"></script>
+</body>
+</html>
