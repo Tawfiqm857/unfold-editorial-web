@@ -9,254 +9,181 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      admins: {
+      article_authors: {
         Row: {
-          created_at: string | null
-          user_id: string
+          article_slug: string
+          author_id: string
+          created_at: string
+          id: string
         }
         Insert: {
-          created_at?: string | null
-          user_id: string
+          article_slug: string
+          author_id: string
+          created_at?: string
+          id?: string
         }
         Update: {
-          created_at?: string | null
-          user_id?: string
+          article_slug?: string
+          author_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "article_authors_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "authors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      authors: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          name: string
+          profile_image_url: string | null
+          social_links: Json | null
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          profile_image_url?: string | null
+          social_links?: Json | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          profile_image_url?: string | null
+          social_links?: Json | null
+          updated_at?: string
+          website_url?: string | null
         }
         Relationships: []
       }
-      cart_items: {
-        Row: {
-          created_at: string
-          id: string
-          product_id: string
-          quantity: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          product_id: string
-          quantity?: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          product_id?: string
-          quantity?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "cart_items_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       orders: {
         Row: {
-          buyer_id: string
           created_at: string
+          currency: string
+          delivery_address: Json | null
           id: string
+          order_number: string
+          order_status: string
           payment_status: string
-          product_id: string
+          product_type: string
           quantity: number
-          seller_id: string
-          status: string
+          stripe_payment_intent_id: string | null
           total_amount: number
           updated_at: string
+          user_id: string | null
         }
         Insert: {
-          buyer_id: string
           created_at?: string
+          currency?: string
+          delivery_address?: Json | null
           id?: string
+          order_number: string
+          order_status?: string
           payment_status?: string
-          product_id: string
+          product_type?: string
           quantity?: number
-          seller_id: string
-          status?: string
+          stripe_payment_intent_id?: string | null
           total_amount: number
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
-          buyer_id?: string
           created_at?: string
+          currency?: string
+          delivery_address?: Json | null
           id?: string
+          order_number?: string
+          order_status?: string
           payment_status?: string
-          product_id?: string
+          product_type?: string
           quantity?: number
-          seller_id?: string
-          status?: string
+          stripe_payment_intent_id?: string | null
           total_amount?: number
           updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "orders_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      products: {
-        Row: {
-          category: string
-          created_at: string
-          description: string | null
-          id: string
-          image_url: string | null
-          location: string | null
-          name: string
-          owner_id: string
-          price: number
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          location?: string | null
-          name: string
-          owner_id: string
-          price: number
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          location?: string | null
-          name?: string
-          owner_id?: string
-          price?: number
-          status?: string
-          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
       profiles: {
         Row: {
-          avatar_url: string | null
+          address: string | null
+          city: string | null
+          country: string | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
-          location: string | null
           phone: string | null
+          state: string | null
           updated_at: string
         }
         Insert: {
-          avatar_url?: string | null
+          address?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id: string
-          location?: string | null
           phone?: string | null
+          state?: string | null
           updated_at?: string
         }
         Update: {
-          avatar_url?: string | null
+          address?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
-          location?: string | null
           phone?: string | null
+          state?: string | null
           updated_at?: string
         }
         Relationships: []
       }
-      swap_requests: {
+      purchases: {
         Row: {
           created_at: string
           id: string
-          message: string
-          product_id: string
-          requester_id: string
-          status: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          message: string
-          product_id: string
-          requester_id: string
-          status?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          message?: string
-          product_id?: string
-          requester_id?: string
-          status?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "swap_requests_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      table_name: {
-        Row: {
-          data: Json | null
-          id: number
-          inserted_at: string
-          name: string | null
-          updated_at: string
-        }
-        Insert: {
-          data?: Json | null
-          id?: number
-          inserted_at?: string
-          name?: string | null
-          updated_at?: string
-        }
-        Update: {
-          data?: Json | null
-          id?: number
-          inserted_at?: string
-          name?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
+          magazine_issue: string
+          payment_id: string | null
+          payment_status: string
+          price: number
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          role?: Database["public"]["Enums"]["app_role"]
+          magazine_issue: string
+          payment_id?: string | null
+          payment_status?: string
+          price: number
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
-          role?: Database["public"]["Enums"]["app_role"]
+          magazine_issue?: string
+          payment_id?: string | null
+          payment_status?: string
+          price?: number
           user_id?: string
         }
         Relationships: []
@@ -266,16 +193,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _user_id: string
-          _role: Database["public"]["Enums"]["app_role"]
-        }
-        Returns: boolean
+      generate_order_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -390,8 +314,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "user"],
-    },
+    Enums: {},
   },
 } as const
