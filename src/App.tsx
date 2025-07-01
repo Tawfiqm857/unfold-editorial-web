@@ -42,9 +42,21 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<AuthPage />} />
-              <Route path="/dashboard" element={<EnhancedDashboard />} />
-              <Route path="/dashboard-old" element={<Dashboard />} />
-              <Route path="/order" element={<OrderPage />} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <EnhancedDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard-old" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/order" element={
+                <ProtectedRoute>
+                  <OrderPage />
+                </ProtectedRoute>
+              } />
               <Route path="/article/:slug" element={<ArticlePage />} />
               <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/about" element={<AboutPage />} />
