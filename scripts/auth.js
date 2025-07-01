@@ -1,5 +1,12 @@
 
-// Authentication JavaScript
+// Authentication JavaScript with Supabase integration
+import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
+
+const supabaseUrl = 'https://atwlsvlzejxitpsltapl.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0d2xzdmx6ZWp4aXRwc2x0YXBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3NjgzMTAsImV4cCI6MjA2NjM0NDMxMH0.-XGrPL0VywL4fA7paNn22vpGqfHTu_KF199P7ycYWQ8';
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get form elements
     const signInForm = document.getElementById('signInForm');
@@ -48,28 +55,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Simulate sign in process
+            // Real Supabase sign in
             const submitBtn = signInForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             
             submitBtn.textContent = 'Signing in...';
             submitBtn.disabled = true;
             
-            setTimeout(() => {
-                // Simulate successful sign in
-                showNotification('Welcome back! Redirecting...', 'success');
-                
-                // Store auth state if remember me is checked
-                if (remember) {
-                    localStorage.setItem('authRemember', 'true');
+            supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            }).then(({ data, error }) => {
+                if (error) {
+                    showNotification(error.message, 'error');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                } else {
+                    showNotification('Welcome back! Redirecting...', 'success');
+                    
+                    // Store auth state if remember me is checked
+                    if (remember) {
+                        localStorage.setItem('authRemember', 'true');
+                    }
+                    
+                    // Redirect to React app
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1500);
                 }
-                
-                // Redirect to dashboard or home page
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-                
-            }, 1500);
+            });
         });
     }
 
@@ -110,30 +124,45 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Simulate sign up process
+            // Real Supabase sign up
             const submitBtn = signUpForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             
             submitBtn.textContent = 'Creating account...';
             submitBtn.disabled = true;
             
-            setTimeout(() => {
-                // Simulate successful sign up
-                showNotification('Account created successfully! Please check your email to verify your account.', 'success');
-                
-                // Reset form
-                signUpForm.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                
-                // Switch to sign in form
-                setTimeout(() => {
-                    signUpCard.style.display = 'none';
-                    signInCard.style.display = 'block';
-                    signInCard.classList.add('animate-scale-in');
-                }, 2000);
-                
-            }, 1500);
+            const redirectUrl = `${window.location.origin}/dashboard`;
+            
+            supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    emailRedirectTo: redirectUrl,
+                    data: {
+                        full_name: fullName
+                    }
+                }
+            }).then(({ data, error }) => {
+                if (error) {
+                    showNotification(error.message, 'error');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                } else {
+                    showNotification('Account created successfully! Please check your email to verify your account.', 'success');
+                    
+                    // Reset form
+                    signUpForm.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Switch to sign in form
+                    setTimeout(() => {
+                        signUpCard.style.display = 'none';
+                        signInCard.style.display = 'block';
+                        signInCard.classList.add('animate-scale-in');
+                    }, 2000);
+                }
+            });
         });
     }
 

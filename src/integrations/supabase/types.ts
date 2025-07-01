@@ -9,181 +9,128 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      article_authors: {
+      activity_logs: {
         Row: {
-          article_slug: string
-          author_id: string
+          action: string
           created_at: string
+          details: Json | null
           id: string
+          ip_address: string | null
+          user_agent: string | null
+          user_id: string
         }
         Insert: {
-          article_slug: string
-          author_id: string
+          action: string
           created_at?: string
+          details?: Json | null
           id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id: string
         }
         Update: {
-          article_slug?: string
-          author_id?: string
+          action?: string
           created_at?: string
+          details?: Json | null
           id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "article_authors_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "authors"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      authors: {
-        Row: {
-          bio: string | null
-          created_at: string
-          id: string
-          name: string
-          profile_image_url: string | null
-          social_links: Json | null
-          updated_at: string
-          website_url: string | null
-        }
-        Insert: {
-          bio?: string | null
-          created_at?: string
-          id?: string
-          name: string
-          profile_image_url?: string | null
-          social_links?: Json | null
-          updated_at?: string
-          website_url?: string | null
-        }
-        Update: {
-          bio?: string | null
-          created_at?: string
-          id?: string
-          name?: string
-          profile_image_url?: string | null
-          social_links?: Json | null
-          updated_at?: string
-          website_url?: string | null
+          ip_address?: string | null
+          user_agent?: string | null
+          user_id?: string
         }
         Relationships: []
       }
       orders: {
         Row: {
           created_at: string
-          currency: string
-          delivery_address: Json | null
           id: string
+          notes: string | null
           order_number: string
           order_status: string
+          payment_reference: string | null
           payment_status: string
-          product_type: string
           quantity: number
-          stripe_payment_intent_id: string | null
+          shipping_address: Json | null
           total_amount: number
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
-          currency?: string
-          delivery_address?: Json | null
           id?: string
+          notes?: string | null
           order_number: string
           order_status?: string
+          payment_reference?: string | null
           payment_status?: string
-          product_type?: string
           quantity?: number
-          stripe_payment_intent_id?: string | null
+          shipping_address?: Json | null
           total_amount: number
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
-          currency?: string
-          delivery_address?: Json | null
           id?: string
+          notes?: string | null
           order_number?: string
           order_status?: string
+          payment_reference?: string | null
           payment_status?: string
-          product_type?: string
           quantity?: number
-          stripe_payment_intent_id?: string | null
+          shipping_address?: Json | null
           total_amount?: number
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
       profiles: {
         Row: {
           address: string | null
+          avatar_url: string | null
+          bio: string | null
           city: string | null
           country: string | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
+          notification_preferences: Json | null
           phone: string | null
           state: string | null
           updated_at: string
+          user_id: string
         }
         Insert: {
           address?: string | null
-          city?: string | null
-          country?: string | null
-          created_at?: string
-          email?: string | null
-          full_name?: string | null
-          id: string
-          phone?: string | null
-          state?: string | null
-          updated_at?: string
-        }
-        Update: {
-          address?: string | null
+          avatar_url?: string | null
+          bio?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
+          notification_preferences?: Json | null
           phone?: string | null
           state?: string | null
           updated_at?: string
-        }
-        Relationships: []
-      }
-      purchases: {
-        Row: {
-          created_at: string
-          id: string
-          magazine_issue: string
-          payment_id: string | null
-          payment_status: string
-          price: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          magazine_issue: string
-          payment_id?: string | null
-          payment_status?: string
-          price: number
           user_id: string
         }
         Update: {
+          address?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
+          email?: string | null
+          full_name?: string | null
           id?: string
-          magazine_issue?: string
-          payment_id?: string | null
-          payment_status?: string
-          price?: number
+          notification_preferences?: Json | null
+          phone?: string | null
+          state?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
