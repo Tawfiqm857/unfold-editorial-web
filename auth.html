@@ -8,9 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="static-styles.css">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -63,6 +61,11 @@
         <div class="auth-container">
             <div class="auth-card animate-scale-in">
                 <div class="auth-header">
+                    <div class="auth-logo">
+                        <div class="logo-icon">
+                            <span>UNF</span>
+                        </div>
+                    </div>
                     <h1 class="auth-title">Welcome Back</h1>
                     <p class="auth-subtitle">Sign in to access exclusive content and personalized recommendations</p>
                 </div>
@@ -118,6 +121,11 @@
             <!-- Sign Up Form (Hidden by default) -->
             <div class="auth-card sign-up-card" id="signUpCard" style="display: none;">
                 <div class="auth-header">
+                    <div class="auth-logo">
+                        <div class="logo-icon">
+                            <span>UNF</span>
+                        </div>
+                    </div>
                     <h1 class="auth-title">Create Account</h1>
                     <p class="auth-subtitle">Join our community to access exclusive stories and insights</p>
                 </div>
@@ -191,7 +199,7 @@
         </div>
     </footer>
 
-    <script src="scripts/main.js"></script>
-    <script src="scripts/auth.js"></script>
+    <script src="static-script.js"></script>
+    <script type="module" src="scripts/auth.js"></script>
 </body>
 </html>

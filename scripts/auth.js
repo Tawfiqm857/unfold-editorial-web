@@ -229,17 +229,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Check if user is already authenticated
-    function checkAuthState() {
+    // Check if user is already authenticated  
+    async function checkAuthState() {
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (session) {
+                showNotification('Welcome back!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+                return;
+            }
+        } catch (error) {
+            console.log('Session check error:', error);
+        }
+        
+        // Check localStorage fallback
         const remember = localStorage.getItem('authRemember');
         const currentPath = window.location.pathname;
         
-        // If user is on auth page but should be remembered, redirect
         if (remember && currentPath.includes('auth.html')) {
-            showNotification('Welcome back!', 'success');
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1000);
+            // Verify session is still valid
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                showNotification('Welcome back!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                localStorage.removeItem('authRemember');
+            }
         }
     }
 
