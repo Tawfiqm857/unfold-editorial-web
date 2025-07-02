@@ -61,55 +61,103 @@ async function loadUserData() {
         document.getElementById('dashboardLoading').style.display = 'flex';
         document.getElementById('dashboardContent').style.display = 'none';
         
-        // Load user profile
-        const { data: profile, error: profileError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .single();
-            
-        if (profileError && profileError.code !== 'PGRST116') {
-            console.error('Profile error:', profileError);
-        } else if (profile) {
-            userProfile = profile;
+        // Load critical data first (profile and recent orders) in parallel
+        const [profileResult, ordersResult] = await Promise.allSettled([
+            supabase
+                .from('profiles')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .single(),
+            supabase
+                .from('orders')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(5) // Load only recent orders first
+        ]);
+        
+        // Process profile data
+        if (profileResult.status === 'fulfilled') {
+            const { data: profile, error: profileError } = profileResult.value;
+            if (profileError && profileError.code !== 'PGRST116') {
+                console.error('Profile error:', profileError);
+            } else if (profile) {
+                userProfile = profile;
+            }
         }
         
-        // Load user orders
-        const { data: orders, error: ordersError } = await supabase
-            .from('orders')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .order('created_at', { ascending: false });
-            
-        if (ordersError) {
-            console.error('Orders error:', ordersError);
-        } else {
-            userOrders = orders || [];
+        // Process orders data
+        if (ordersResult.status === 'fulfilled') {
+            const { data: orders, error: ordersError } = ordersResult.value;
+            if (ordersError) {
+                console.error('Orders error:', ordersError);
+            } else {
+                userOrders = orders || [];
+            }
         }
         
-        // Load user activity
-        const { data: activity, error: activityError } = await supabase
-            .from('activity_logs')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .order('created_at', { ascending: false })
-            .limit(10);
-            
-        if (activityError) {
-            console.error('Activity error:', activityError);
-        } else {
-            userActivity = activity || [];
-        }
+        // Show dashboard immediately with critical data
+        document.getElementById('dashboardLoading').style.display = 'none';
+        document.getElementById('dashboardContent').style.display = 'block';
         
-        // Log dashboard visit
-        await logActivity('dashboard_visit');
+        // Populate critical sections first
+        populateUserInfo();
+        populateAnalytics();
+        populateOverviewTab();
+        
+        // Load remaining data in background
+        loadNonCriticalData();
         
     } catch (error) {
         console.error('Error loading user data:', error);
-    } finally {
-        // Hide loading state
         document.getElementById('dashboardLoading').style.display = 'none';
         document.getElementById('dashboardContent').style.display = 'block';
+    }
+}
+
+async function loadNonCriticalData() {
+    try {
+        // Load remaining orders and activity in parallel
+        const [allOrdersResult, activityResult] = await Promise.allSettled([
+            supabase
+                .from('orders')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false }),
+            supabase
+                .from('activity_logs')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(10)
+        ]);
+        
+        // Process all orders
+        if (allOrdersResult.status === 'fulfilled') {
+            const { data: orders, error: ordersError } = allOrdersResult.value;
+            if (!ordersError) {
+                userOrders = orders || [];
+                // Update orders tab if it's already populated
+                populateOrdersTab();
+                // Update analytics with complete data
+                populateAnalytics();
+            }
+        }
+        
+        // Process activity data
+        if (activityResult.status === 'fulfilled') {
+            const { data: activity, error: activityError } = activityResult.value;
+            if (!activityError) {
+                userActivity = activity || [];
+                populateActivityTab();
+            }
+        }
+        
+        // Log dashboard visit (non-blocking)
+        logActivity('dashboard_visit').catch(err => console.error('Activity log error:', err));
+        
+    } catch (error) {
+        console.error('Error loading non-critical data:', error);
     }
 }
 
