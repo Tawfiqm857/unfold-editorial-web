@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Magazine Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    /* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #1a202c;
+}
+
+/* Loading Screen */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+}
+
+.spinner {
+    width: 64px;
+    height: 64px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-content p {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Dashboard Layout */
+.dashboard {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Header */
+.dashboard-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-info h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.header-info p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.w-full {
+    width: 100%;
+}
+
+.mb-3 {
+    margin-bottom: 12px;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.stat-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.stat-value.success {
+    color: #059669;
+}
+
+.stat-value.warning {
+    color: #d97706;
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.stat-icon.primary {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.stat-icon.success {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+}
+
+.stat-icon.warning {
+    background: rgba(217, 119, 6, 0.1);
+    color: #d97706;
+}
+
+.stat-icon.secondary {
+    background: rgba(118, 75, 162, 0.1);
+    color: #764ba2;
+}
+
+/* Main Grid */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 32px;
+}
+
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cards */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    margin-bottom: 24px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.gradient-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+}
+
+.gradient-header-alt {
+    background: linear-gradient(135deg, rgba(118, 75, 162, 0.1), rgba(102, 126, 234, 0.1));
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a202c;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.card-content {
+    padding: 24px;
+}
+
+/* Profile Fields */
+.profile-field {
+    margin-bottom: 16px;
+}
+
+.field-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.field-value {
+    font-size: 14px;
+    color: #1a202c;
+}
+
+/* Orders */
+.orders-list {
+    display: none;
+}
+
+.orders-list.show {
+    display: block;
+}
+
+.order-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+}
+
+.order-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 12px;
+}
+
+.order-info h4 {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.order-date {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.order-amount {
+    text-align: right;
+}
+
+.order-amount p:first-child {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.order-amount p:last-child {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.order-badges {
+    display: flex;
+    gap: 8px;
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+}
+
+.badge-warning {
+    background: rgba(217, 119, 6, 0.1);
+    color: #d97706;
+}
+
+.badge-error {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+}
+
+.badge-default {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6b7280;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: #6b7280;
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #d1d5db;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1a202c;
+}
+
+.empty-state p {
+    margin-bottom: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard {
+        padding: 16px 8px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .order-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .order-amount {
+        text-align: left;
+    }
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+</style>
+
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading your dashboard...</p>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard hidden">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-info">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, <span id="user-name">User</span></p>
+                </div>
+                <button id="sign-out-btn" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign Out
+                </button>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <p class="stat-label">Total Orders</p>
+                        <p class="stat-value" id="total-orders">0</p>
+                    </div>
+                    <div class="stat-icon primary">
+                        <i class="fas fa-box"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <p class="stat-label">Completed</p>
+                        <p class="stat-value success" id="completed-orders">0</p>
+                    </div>
+                    <div class="stat-icon success">
+                        <i class="fas fa-trending-up"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <p class="stat-label">Pending</p>
+                        <p class="stat-value warning" id="pending-orders">0</p>
+                    </div>
+                    <div class="stat-icon warning">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <p class="stat-label">Total Spent</p>
+                        <p class="stat-value" id="total-spent">₦0</p>
+                    </div>
+                    <div class="stat-icon secondary">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Profile Section -->
+            <div class="profile-section">
+                <div class="card profile-card">
+                    <div class="card-header gradient-header">
+                        <h3><i class="fas fa-user"></i> Profile</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="profile-field">
+                            <p class="field-label">Name</p>
+                            <p class="field-value" id="profile-name">Not provided</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Email</p>
+                            <p class="field-value" id="profile-email">Not provided</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Phone</p>
+                            <p class="field-value" id="profile-phone">Not provided</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Address</p>
+                            <p class="field-value" id="profile-address">Not provided</p>
+                        </div>
+                        <button class="btn btn-outline w-full">Edit Profile</button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card quick-actions-card">
+                    <div class="card-header gradient-header-alt">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="card-content">
+                        <button class="btn btn-primary w-full mb-3">
+                            <i class="fas fa-shopping-cart"></i>
+                            Order Magazine
+                        </button>
+                        <button class="btn btn-outline w-full">
+                            <i class="fas fa-newspaper"></i>
+                            Browse Articles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div class="orders-section">
+                <div class="card orders-card">
+                    <div class="card-header gradient-header">
+                        <h3><i class="fas fa-history"></i> Order History</h3>
+                        <p class="card-description">Track your magazine orders and payment status</p>
+                    </div>
+                    <div class="card-content">
+                        <div id="orders-list" class="orders-list">
+                            <!-- Orders will be populated by JavaScript -->
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div id="empty-orders" class="empty-state">
+                            <i class="fas fa-box-open"></i>
+                            <h3>No orders yet</h3>
+                            <p>Start by ordering your first magazine copy!</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-shopping-cart"></i>
+                                Order Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+
+    // Mock data and state management
+class DashboardApp {
+    constructor() {
+        this.user = null;
+        this.profile = null;
+        this.orders = [];
+        this.isLoading = true;
+        
+        this.init();
+    }
+
+    init() {
+        // Simulate loading time
+        setTimeout(() => {
+            this.loadMockData();
+            this.hideLoading();
+            this.render();
+            this.bindEvents();
+        }, 1500);
+    }
+
+    loadMockData() {
+        // Mock user data
+        this.user = {
+            id: '1',
+            email: 'user@example.com'
+        };
+
+        // Mock profile data
+        this.profile = {
+            full_name: 'John Doe',
+            email: 'john.doe@example.com',
+            phone: '+234 801 234 5678',
+            address: '123 Magazine Street, Lagos',
+            city: 'Lagos',
+            state: 'Lagos State',
+            country: 'Nigeria'
+        };
+
+        // Mock orders data
+        this.orders = [
+            {
+                id: '1',
+                order_number: 'MAG-2024-001',
+                quantity: 2,
+                total_amount: 500000, // in kobo (₦5,000)
+                payment_status: 'paid',
+                order_status: 'completed',
+                created_at: '2024-01-15T10:30:00Z'
+            },
+            {
+                id: '2',
+                order_number: 'MAG-2024-002',
+                quantity: 1,
+                total_amount: 250000, // in kobo (₦2,500)
+                payment_status: 'paid',
+                order_status: 'pending',
+                created_at: '2024-01-20T14:15:00Z'
+            },
+            {
+                id: '3',
+                order_number: 'MAG-2024-003',
+                quantity: 3,
+                total_amount: 750000, // in kobo (₦7,500)
+                payment_status: 'pending',
+                order_status: 'pending',
+                created_at: '2024-01-25T09:45:00Z'
+            }
+        ];
+    }
+
+    hideLoading() {
+        const loadingScreen = document.getElementById('loading');
+        const dashboard = document.getElementById('dashboard');
+        
+        loadingScreen.style.display = 'none';
+        dashboard.classList.remove('hidden');
+        dashboard.classList.add('fade-in');
+    }
+
+    render() {
+        this.renderHeader();
+        this.renderStats();
+        this.renderProfile();
+        this.renderOrders();
+    }
+
+    renderHeader() {
+        const userName = document.getElementById('user-name');
+        userName.textContent = this.profile?.full_name || this.user?.email || 'User';
+    }
+
+    renderStats() {
+        const stats = this.calculateStats();
+        
+        document.getElementById('total-orders').textContent = stats.total;
+        document.getElementById('completed-orders').textContent = stats.completed;
+        document.getElementById('pending-orders').textContent = stats.pending;
+        document.getElementById('total-spent').textContent = this.formatAmount(stats.totalSpent);
+    }
+
+    renderProfile() {
+        document.getElementById('profile-name').textContent = this.profile?.full_name || 'Not provided';
+        document.getElementById('profile-email').textContent = this.profile?.email || this.user?.email || 'Not provided';
+        document.getElementById('profile-phone').textContent = this.profile?.phone || 'Not provided';
+        document.getElementById('profile-address').textContent = this.profile?.address || 'Not provided';
+    }
+
+    renderOrders() {
+        const ordersList = document.getElementById('orders-list');
+        const emptyState = document.getElementById('empty-orders');
+
+        if (this.orders.length === 0) {
+            ordersList.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+        ordersList.style.display = 'block';
+
+        const ordersHTML = this.orders.map(order => `
+            <div class="order-item">
+                <div class="order-header">
+                    <div class="order-info">
+                        <h4>Order #${order.order_number}</h4>
+                        <p class="order-date">${this.formatDate(order.created_at)}</p>
+                    </div>
+                    <div class="order-amount">
+                        <p>${this.formatAmount(order.total_amount)}</p>
+                        <p>Qty: ${order.quantity}</p>
+                    </div>
+                </div>
+                <div class="order-badges">
+                    <span class="badge ${this.getStatusClass(order.payment_status)}">
+                        Payment: ${order.payment_status}
+                    </span>
+                    <span class="badge ${this.getStatusClass(order.order_status)}">
+                        Order: ${order.order_status}
+                    </span>
+                </div>
+            </div>
+        `).join('');
+
+        ordersList.innerHTML = ordersHTML;
+    }
+
+    calculateStats() {
+        const total = this.orders.length;
+        const completed = this.orders.filter(o => o.order_status === 'completed').length;
+        const pending = this.orders.filter(o => o.order_status === 'pending').length;
+        const totalSpent = this.orders.reduce((sum, order) => sum + order.total_amount, 0);
+        
+        return { total, completed, pending, totalSpent };
+    }
+
+    formatAmount(amount) {
+        return new Intl.NumberFormat('en-NG', {
+            style: 'currency',
+            currency: 'NGN'
+        }).format(amount / 100);
+    }
+
+    formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    getStatusClass(status) {
+        switch (status) {
+            case 'paid':
+            case 'completed':
+                return 'badge-success';
+            case 'pending':
+                return 'badge-warning';
+            case 'failed':
+            case 'cancelled':
+                return 'badge-error';
+            default:
+                return 'badge-default';
+        }
+    }
+
+    bindEvents() {
+        // Sign out button
+        document.getElementById('sign-out-btn').addEventListener('click', () => {
+            this.signOut();
+        });
+
+        // Quick action buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            if (btn.textContent.includes('Order Magazine') || btn.textContent.includes('Order Now')) {
+                btn.addEventListener('click', () => {
+                    this.navigateToOrder();
+                });
+            }
+            if (btn.textContent.includes('Browse Articles')) {
+                btn.addEventListener('click', () => {
+                    this.navigateToArticles();
+                });
+            }
+            if (btn.textContent.includes('Edit Profile')) {
+                btn.addEventListener('click', () => {
+                    this.navigateToProfile();
+                });
+            }
+        });
+    }
+
+    signOut() {
+        if (confirm('Are you sure you want to sign out?')) {
+            // Clear user data
+            this.user = null;
+            this.profile = null;
+            this.orders = [];
+            
+            // Show success message
+            this.showToast('Signed out successfully', 'success');
+            
+            // Redirect to login or home page
+            setTimeout(() => {
+                window.location.href = 'index.html'; // or your login page
+            }, 1000);
+        }
+    }
+
+    navigateToOrder() {
+        // Navigate to order page
+        window.location.href = 'order.html';
+    }
+
+    navigateToArticles() {
+        // Navigate to articles/home page
+        window.location.href = 'index.html';
+    }
+
+    navigateToProfile() {
+        // Navigate to profile page
+        window.location.href = 'profile.html';
+    }
+
+    showToast(message, type = 'info') {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        
+        // Style the toast
+        Object.assign(toast.style, {
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            padding: '12px 20px',
+            borderRadius: '8px',
+            color: 'white',
+            fontWeight: '500',
+            zIndex: '9999',
+            opacity: '0',
+            transform: 'translateY(-20px)',
+            transition: 'all 0.3s ease'
+        });
+
+        // Set background color based on type
+        const colors = {
+            success: '#059669',
+            error: '#dc2626',
+            warning: '#d97706',
+            info: '#667eea'
+        };
+        toast.style.backgroundColor = colors[type] || colors.info;
+
+        // Add to DOM
+        document.body.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+        }, 100);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
+    // Method to refresh data (can be called externally)
+    refreshData() {
+        this.loadMockData();
+        this.render();
+    }
+
+    // Method to update profile (can be called from profile page)
+    updateProfile(newProfile) {
+        this.profile = { ...this.profile, ...newProfile };
+        this.renderProfile();
+        this.renderHeader();
+    }
+
+    // Method to add new order (can be called from order page)
+    addOrder(order) {
+        this.orders.unshift(order);
+        this.renderStats();
+        this.renderOrders();
+    }
+}
+
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.dashboardApp = new DashboardApp();
+});
+
+// Make app globally accessible for debugging
+window.DashboardApp = DashboardApp;
+</script>
+</body>
+</html>
