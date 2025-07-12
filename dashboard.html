@@ -524,6 +524,16 @@ body {
         transform: translateY(0); 
     }
 }
+
+/* Loading state for buttons */
+.btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
 </style>
 
 </head>
@@ -613,6 +623,27 @@ body {
                         <h3><i class="fas fa-user"></i> Profile</h3>
                     </div>
                     <div class="card-content">
+                        <!-- Avatar Section -->
+                        <div class="profile-field">
+                            <p class="field-label">Profile Picture</p>
+                            <div class="avatar-section" style="margin: 16px 0;">
+                                <div class="avatar-display" style="display: flex; align-items: center; gap: 16px;">
+                                    <img id="profile-avatar" src="" alt="Profile Avatar" 
+                                         style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #e5e7eb; background: #f3f4f6;"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div id="avatar-placeholder" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; border: 3px solid #e5e7eb;">
+                                        <span id="avatar-initials">?</span>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                                        <button id="upload-avatar-btn" class="btn btn-outline" style="margin-bottom: 8px;">
+                                            <i class="fas fa-upload"></i> Change Photo
+                                        </button>
+                                        <p style="font-size: 12px; color: #6b7280;">Max 5MB, JPG/PNG/WebP</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="profile-field">
                             <p class="field-label">Name</p>
                             <p class="field-value" id="profile-name">Not provided</p>
@@ -784,418 +815,152 @@ body {
             </div>
         </div>
     </div>
-<script>
-
-    // Mock data and state management
-class DashboardApp {
-    constructor() {
-        this.user = null;
-        this.profile = null;
-        this.orders = [];
-        this.isLoading = true;
-        
-        this.init();
-    }
-
-    init() {
-        // Simulate loading time
-        setTimeout(() => {
-            this.loadMockData();
-            this.hideLoading();
-            this.render();
-            this.bindEvents();
-        }, 1500);
-    }
-
-    loadMockData() {
-        // Mock user data
-        this.user = {
-            id: '1',
-            email: 'user@example.com'
-        };
-
-        // Mock profile data
-        this.profile = {
-            full_name: 'John Doe',
-            email: 'john.doe@example.com',
-            phone: '+234 801 234 5678',
-            address: '123 Magazine Street, Lagos',
-            city: 'Lagos',
-            state: 'Lagos State',
-            country: 'Nigeria'
-        };
-
-        // Mock orders data
-        this.orders = [
-            {
-                id: '1',
-                order_number: 'MAG-2024-001',
-                quantity: 2,
-                total_amount: 500000, // in kobo (₦5,000)
-                payment_status: 'paid',
-                order_status: 'completed',
-                created_at: '2024-01-15T10:30:00Z'
-            },
-            {
-                id: '2',
-                order_number: 'MAG-2024-002',
-                quantity: 1,
-                total_amount: 250000, // in kobo (₦2,500)
-                payment_status: 'paid',
-                order_status: 'pending',
-                created_at: '2024-01-20T14:15:00Z'
-            },
-            {
-                id: '3',
-                order_number: 'MAG-2024-003',
-                quantity: 3,
-                total_amount: 750000, // in kobo (₦7,500)
-                payment_status: 'pending',
-                order_status: 'pending',
-                created_at: '2024-01-25T09:45:00Z'
-            }
-        ];
-    }
-
-    hideLoading() {
-        const loadingScreen = document.getElementById('loading');
-        const dashboard = document.getElementById('dashboard');
-        
-        loadingScreen.style.display = 'none';
-        dashboard.classList.remove('hidden');
-        dashboard.classList.add('fade-in');
-    }
-
-    render() {
-        this.renderHeader();
-        this.renderStats();
-        this.renderProfile();
-        this.renderOrders();
-    }
-
-    renderHeader() {
-        const userName = document.getElementById('user-name');
-        userName.textContent = this.profile?.full_name || this.user?.email || 'User';
-    }
-
-    renderStats() {
-        const stats = this.calculateStats();
-        
-        document.getElementById('total-orders').textContent = stats.total;
-        document.getElementById('completed-orders').textContent = stats.completed;
-        document.getElementById('pending-orders').textContent = stats.pending;
-        document.getElementById('total-spent').textContent = this.formatAmount(stats.totalSpent);
-    }
-
-    renderProfile() {
-        document.getElementById('profile-name').textContent = this.profile?.full_name || 'Not provided';
-        document.getElementById('profile-email').textContent = this.profile?.email || this.user?.email || 'Not provided';
-        document.getElementById('profile-phone').textContent = this.profile?.phone || 'Not provided';
-        document.getElementById('profile-address').textContent = this.profile?.address || 'Not provided';
-        document.getElementById('profile-city').textContent = this.profile?.city || 'Not provided';
-        document.getElementById('profile-state').textContent = this.profile?.state || 'Not provided';
-        document.getElementById('profile-country').textContent = this.profile?.country || 'Not provided';
-    }
-
-    renderOrders() {
-        const ordersList = document.getElementById('orders-list');
-        const emptyState = document.getElementById('empty-orders');
-
-        if (this.orders.length === 0) {
-            ordersList.style.display = 'none';
-            emptyState.style.display = 'block';
-            return;
-        }
-
-        emptyState.style.display = 'none';
-        ordersList.style.display = 'block';
-
-        const ordersHTML = this.orders.map(order => `
-            <div class="order-item">
-                <div class="order-header">
-                    <div class="order-info">
-                        <h4>Order #${order.order_number}</h4>
-                        <p class="order-date">${this.formatDate(order.created_at)}</p>
-                    </div>
-                    <div class="order-amount">
-                        <p>${this.formatAmount(order.total_amount)}</p>
-                        <p>Qty: ${order.quantity}</p>
-                    </div>
-                </div>
-                <div class="order-badges">
-                    <span class="badge ${this.getStatusClass(order.payment_status)}">
-                        Payment: ${order.payment_status}
-                    </span>
-                    <span class="badge ${this.getStatusClass(order.order_status)}">
-                        Order: ${order.order_status}
-                    </span>
-                </div>
-            </div>
-        `).join('');
-
-        ordersList.innerHTML = ordersHTML;
-    }
-
-    calculateStats() {
-        const total = this.orders.length;
-        const completed = this.orders.filter(o => o.order_status === 'completed').length;
-        const pending = this.orders.filter(o => o.order_status === 'pending').length;
-        const totalSpent = this.orders.reduce((sum, order) => sum + order.total_amount, 0);
-        
-        return { total, completed, pending, totalSpent };
-    }
-
-    formatAmount(amount) {
-        return new Intl.NumberFormat('en-NG', {
-            style: 'currency',
-            currency: 'NGN'
-        }).format(amount / 100);
-    }
-
-    formatDate(dateString) {
-        return new Date(dateString).toLocaleDateString('en-GB', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
-
-    getStatusClass(status) {
-        switch (status) {
-            case 'paid':
-            case 'completed':
-                return 'badge-success';
-            case 'pending':
-                return 'badge-warning';
-            case 'failed':
-            case 'cancelled':
-                return 'badge-error';
-            default:
-                return 'badge-default';
-        }
-    }
-
-    bindEvents() {
-        // Sign out button
-        document.getElementById('sign-out-btn').addEventListener('click', () => {
-            this.signOut();
-        });
-
-        // Profile editing
-        document.getElementById('edit-profile-btn').addEventListener('click', () => {
-            this.showProfileEditor();
-        });
-
-        document.getElementById('cancel-edit-btn').addEventListener('click', () => {
-            this.hideProfileEditor();
-        });
-
-        document.getElementById('profile-form').addEventListener('submit', (e) => {
-            this.handleProfileUpdate(e);
-        });
-
-        // Newsletter subscription
-        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
-            this.handleNewsletterUpdate(e);
-        });
-
-        // Quick action buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            if (btn.textContent.includes('Order Magazine') || btn.textContent.includes('Order Now')) {
-                btn.addEventListener('click', () => {
-                    this.navigateToOrder();
-                });
-            }
-            if (btn.textContent.includes('Browse Articles')) {
-                btn.addEventListener('click', () => {
-                    this.navigateToArticles();
-                });
-            }
-        });
-    }
-
-    signOut() {
-        if (confirm('Are you sure you want to sign out?')) {
-            // Clear user data
-            this.user = null;
-            this.profile = null;
-            this.orders = [];
+    <!-- Load Supabase Scripts -->
+    <script type="module" src="./scripts/dashboard.js"></script>
+    <script type="module">
+        // Avatar upload functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadBtn = document.getElementById('upload-avatar-btn');
+            const fileInput = document.getElementById('avatar-upload');
+            const avatar = document.getElementById('profile-avatar');
+            const placeholder = document.getElementById('avatar-placeholder');
+            const initials = document.getElementById('avatar-initials');
             
-            // Show success message
-            this.showToast('Signed out successfully', 'success');
+            uploadBtn?.addEventListener('click', () => {
+                fileInput.click();
+            });
             
-            // Redirect to login or home page
-            setTimeout(() => {
-                window.location.href = 'index.html'; // or your login page
-            }, 1000);
-        }
-    }
+            fileInput?.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                // Validate file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    return;
+                }
+                
+                try {
+                    uploadBtn.disabled = true;
+                    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+                    
+                    // Import Supabase client
+                    const { supabase } = await import('./scripts/dashboard-config.js');
+                    const { currentUser, userProfile, setUserProfile } = await import('./scripts/dashboard-config.js');
+                    
+                    if (!currentUser) {
+                        throw new Error('Not authenticated');
+                    }
+                    
+                    // Create unique filename
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${currentUser.id}/avatar.${fileExt}`;
+                    
+                    // Upload to Supabase Storage
+                    const { data, error } = await supabase.storage
+                        .from('avatars')
+                        .upload(fileName, file, {
+                            upsert: true
+                        });
+                    
+                    if (error) throw error;
+                    
+                    // Get public URL
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('avatars')
+                        .getPublicUrl(fileName);
+                    
+                    // Update profile in database
+                    const { error: updateError } = await supabase
+                        .from('profiles')
+                        .update({ avatar_url: publicUrl })
+                        .eq('user_id', currentUser.id);
+                    
+                    if (updateError) throw updateError;
+                    
+                    // Update local profile state
+                    setUserProfile({ ...userProfile, avatar_url: publicUrl });
+                    
+                    // Update UI
+                    avatar.src = publicUrl;
+                    avatar.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    
+                    // Show success message
+                    showToast('Profile picture updated successfully!', 'success');
+                    
+                } catch (error) {
+                    console.error('Avatar upload error:', error);
+                    alert('Failed to upload profile picture. Please try again.');
+                } finally {
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Change Photo';
+                }
+            });
+            
+            // Initialize avatar display
+            async function initializeAvatar() {
+                const { userProfile } = await import('./scripts/dashboard-config.js');
+                if (userProfile?.avatar_url) {
+                    avatar.src = userProfile.avatar_url;
+                    avatar.style.display = 'block';
+                    placeholder.style.display = 'none';
+                } else {
+                    // Show initials
+                    const name = userProfile?.full_name || 'User';
+                    const nameInitials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    initials.textContent = nameInitials || '?';
+                    avatar.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                }
+            }
+            
+            // Initialize after a short delay to ensure dashboard scripts have loaded
+            setTimeout(initializeAvatar, 1000);
+            
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.textContent = message;
+                
+                Object.assign(toast.style, {
+                    position: 'fixed',
+                    top: '20px',
+                    right: '20px',
+                    padding: '12px 20px',
+                    borderRadius: '8px',
+                    color: 'white',
+                    fontWeight: '500',
+                    zIndex: '9999',
+                    opacity: '0',
+                    transform: 'translateY(-20px)',
+                    transition: 'all 0.3s ease'
+                });
 
-    navigateToOrder() {
-        // Navigate to order page
-        window.location.href = 'order.html';
-    }
+                const colors = {
+                    success: '#059669',
+                    error: '#dc2626',
+                    warning: '#d97706',
+                    info: '#667eea'
+                };
+                toast.style.backgroundColor = colors[type] || colors.info;
 
-    navigateToArticles() {
-        // Navigate to articles/home page
-        window.location.href = 'index.html';
-    }
+                document.body.appendChild(toast);
 
-    navigateToProfile() {
-        // Navigate to profile page
-        window.location.href = 'profile.html';
-    }
+                setTimeout(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                }, 100);
 
-    showToast(message, type = 'info') {
-        // Create toast notification
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        
-        // Style the toast
-        Object.assign(toast.style, {
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            padding: '12px 20px',
-            borderRadius: '8px',
-            color: 'white',
-            fontWeight: '500',
-            zIndex: '9999',
-            opacity: '0',
-            transform: 'translateY(-20px)',
-            transition: 'all 0.3s ease'
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
         });
-
-        // Set background color based on type
-        const colors = {
-            success: '#059669',
-            error: '#dc2626',
-            warning: '#d97706',
-            info: '#667eea'
-        };
-        toast.style.backgroundColor = colors[type] || colors.info;
-
-        // Add to DOM
-        document.body.appendChild(toast);
-
-        // Animate in
-        setTimeout(() => {
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateY(0)';
-        }, 100);
-
-        // Remove after 3 seconds
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(-20px)';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 3000);
-    }
-
-    // Method to refresh data (can be called externally)
-    refreshData() {
-        this.loadMockData();
-        this.render();
-    }
-
-    // Method to update profile (can be called from profile page)
-    updateProfile(newProfile) {
-        this.profile = { ...this.profile, ...newProfile };
-        this.renderProfile();
-        this.renderHeader();
-    }
-
-    // Method to add new order (can be called from order page)
-    addOrder(order) {
-        this.orders.unshift(order);
-        this.renderStats();
-        this.renderOrders();
-    }
-
-    // Profile editing methods
-    showProfileEditor() {
-        // Populate form with current data
-        document.getElementById('fullName').value = this.profile?.full_name || '';
-        document.getElementById('phone').value = this.profile?.phone || '';
-        document.getElementById('address').value = this.profile?.address || '';
-        document.getElementById('city').value = this.profile?.city || '';
-        document.getElementById('state').value = this.profile?.state || '';
-        document.getElementById('country').value = this.profile?.country || '';
-        document.getElementById('bio').value = this.profile?.bio || '';
-
-        // Toggle views
-        document.getElementById('profile-view').classList.add('hidden');
-        document.getElementById('profile-edit').classList.remove('hidden');
-    }
-
-    hideProfileEditor() {
-        document.getElementById('profile-view').classList.remove('hidden');
-        document.getElementById('profile-edit').classList.add('hidden');
-    }
-
-    handleProfileUpdate(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
-        const updatedProfile = {
-            full_name: formData.get('fullName'),
-            phone: formData.get('phone'),
-            address: formData.get('address'),
-            city: formData.get('city'),
-            state: formData.get('state'),
-            country: formData.get('country'),
-            bio: formData.get('bio')
-        };
-
-        // Update profile data
-        this.profile = { ...this.profile, ...updatedProfile };
-        
-        // Re-render profile section
-        this.renderProfile();
-        this.renderHeader();
-        
-        // Hide editor and show success message
-        this.hideProfileEditor();
-        this.showToast('Profile updated successfully!', 'success');
-    }
-
-    // Newsletter subscription methods
-    handleNewsletterUpdate(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
-        const subscriptions = formData.getAll('newsletters');
-        
-        // Update subscription status
-        const subscriptionCount = subscriptions.length;
-        const statusElement = document.getElementById('subscription-status');
-        
-        if (subscriptionCount === 0) {
-            statusElement.textContent = 'Not subscribed';
-            statusElement.style.color = '#6b7280';
-        } else {
-            statusElement.textContent = `Subscribed to ${subscriptionCount} newsletter${subscriptionCount > 1 ? 's' : ''}`;
-            statusElement.style.color = '#059669';
-        }
-        
-        // Show success message
-        this.showToast('Newsletter preferences updated!', 'success');
-        
-        // Mock API call would go here
-        console.log('Newsletter subscriptions:', subscriptions);
-    }
-}
-
-// Initialize the app when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    window.dashboardApp = new DashboardApp();
-});
-
-// Make app globally accessible for debugging
-window.DashboardApp = DashboardApp;
-</script>
+    </script>
 </body>
 </html>

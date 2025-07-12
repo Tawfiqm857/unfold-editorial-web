@@ -3,9 +3,12 @@ import { supabase, currentUser, setUserProfile, setUserOrders, setUserActivity }
 
 export async function loadUserData() {
     try {
-        // Show loading state
-        document.getElementById('dashboardLoading').style.display = 'flex';
-        document.getElementById('dashboardContent').style.display = 'none';
+        // Show loading state (use the actual loading element from HTML)
+        const loadingElement = document.getElementById('loading');
+        const dashboardElement = document.getElementById('dashboard');
+        
+        if (loadingElement) loadingElement.style.display = 'flex';
+        if (dashboardElement) dashboardElement.classList.add('hidden');
         
         // Load critical data first (profile and recent orders) in parallel
         const [profileResult, ordersResult] = await Promise.allSettled([
@@ -13,7 +16,7 @@ export async function loadUserData() {
                 .from('profiles')
                 .select('*')
                 .eq('user_id', currentUser.id)
-                .single(),
+                .maybeSingle(),
             supabase
                 .from('orders')
                 .select('*')
@@ -25,10 +28,32 @@ export async function loadUserData() {
         // Process profile data
         if (profileResult.status === 'fulfilled') {
             const { data: profile, error: profileError } = profileResult.value;
-            if (profileError && profileError.code !== 'PGRST116') {
+            if (profileError) {
                 console.error('Profile error:', profileError);
             } else if (profile) {
                 setUserProfile(profile);
+            } else {
+                // Create default profile if it doesn't exist
+                const defaultProfile = {
+                    user_id: currentUser.id,
+                    email: currentUser.email,
+                    full_name: currentUser.user_metadata?.full_name || null,
+                    notification_preferences: {
+                        push: true,
+                        email: true,
+                        marketing: false
+                    }
+                };
+                
+                const { data: newProfile } = await supabase
+                    .from('profiles')
+                    .insert(defaultProfile)
+                    .select()
+                    .maybeSingle();
+                    
+                if (newProfile) {
+                    setUserProfile(newProfile);
+                }
             }
         }
         
@@ -43,16 +68,25 @@ export async function loadUserData() {
         }
         
         // Show dashboard immediately with critical data
-        document.getElementById('dashboardLoading').style.display = 'none';
-        document.getElementById('dashboardContent').style.display = 'block';
+        const loadingElement = document.getElementById('loading');
+        const dashboardElement = document.getElementById('dashboard');
+        
+        if (loadingElement) loadingElement.style.display = 'none';
+        if (dashboardElement) {
+            dashboardElement.classList.remove('hidden');
+            dashboardElement.classList.add('fade-in');
+        }
         
         // Load remaining data in background
         loadNonCriticalData();
         
     } catch (error) {
         console.error('Error loading user data:', error);
-        document.getElementById('dashboardLoading').style.display = 'none';
-        document.getElementById('dashboardContent').style.display = 'block';
+        const loadingElement = document.getElementById('loading');
+        const dashboardElement = document.getElementById('dashboard');
+        
+        if (loadingElement) loadingElement.style.display = 'none';
+        if (dashboardElement) dashboardElement.classList.remove('hidden');
     }
 }
 

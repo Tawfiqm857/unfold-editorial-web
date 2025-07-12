@@ -1,99 +1,118 @@
 // Dashboard utility functions
+export function showNotification(message, type = 'info') {
+    // Create toast notification
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    // Style the toast
+    Object.assign(toast.style, {
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        padding: '12px 20px',
+        borderRadius: '8px',
+        color: 'white',
+        fontWeight: '500',
+        zIndex: '9999',
+        opacity: '0',
+        transform: 'translateY(-20px)',
+        transition: 'all 0.3s ease'
+    });
+
+    // Set background color based on type
+    const colors = {
+        success: '#059669',
+        error: '#dc2626',
+        warning: '#d97706',
+        info: '#667eea'
+    };
+    toast.style.backgroundColor = colors[type] || colors.info;
+
+    // Add to DOM
+    document.body.appendChild(toast);
+
+    // Animate in
+    setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+    }, 100);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-20px)';
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 300);
+    }, 3000);
+}
+
 export function formatAmount(amount) {
+    // Amount is in kobo, convert to naira
+    const naira = amount / 100;
     return new Intl.NumberFormat('en-NG', {
         style: 'currency',
         currency: 'NGN'
-    }).format(amount / 100);
+    }).format(naira);
+}
+
+export function formatDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(date);
 }
 
 export function getStatusClass(status) {
-    switch (status) {
-        case 'paid':
-        case 'completed':
-        case 'delivered':
-            return 'status-success';
-        case 'pending':
-        case 'processing':
-            return 'status-warning';
-        case 'failed':
-        case 'cancelled':
-            return 'status-error';
-        case 'shipped':
-            return 'status-info';
-        default:
-            return 'status-default';
-    }
+    const statusClasses = {
+        'completed': 'badge-success',
+        'paid': 'badge-success', 
+        'pending': 'badge-warning',
+        'processing': 'badge-warning',
+        'failed': 'badge-error',
+        'cancelled': 'badge-error'
+    };
+    return statusClasses[status] || 'badge-default';
+}
+
+export function getInitials(name) {
+    if (!name) return '?';
+    return name.split(' ')
+        .map(n => n[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
 }
 
 export function getActivityIcon(action) {
     const icons = {
-        'user_signup': '👋',
-        'user_login': '🔑',
+        'user_login': '🔐',
         'user_logout': '🚪',
-        'dashboard_visit': '📊',
-        'profile_updated': '👤',
+        'user_signup': '👋',
+        'profile_updated': '✏️',
         'order_created': '🛒',
-        'order_updated': '📦'
+        'payment_completed': '💳',
+        'dashboard_visit': '📊'
     };
-    return icons[action] || '📋';
+    return icons[action] || '📝';
 }
 
 export function getActivityTitle(action) {
     const titles = {
-        'user_signup': 'Account Created',
-        'user_login': 'Signed In',
-        'user_logout': 'Signed Out',
-        'dashboard_visit': 'Visited Dashboard',
-        'profile_updated': 'Profile Updated',
-        'order_created': 'Order Created',
-        'order_updated': 'Order Updated'
+        'user_login': 'Signed in',
+        'user_logout': 'Signed out',
+        'user_signup': 'Account created',
+        'profile_updated': 'Profile updated',
+        'order_created': 'New order placed',
+        'payment_completed': 'Payment completed',
+        'dashboard_visit': 'Visited dashboard'
     };
     return titles[action] || 'Activity';
-}
-
-export function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => {
-        notification.remove();
-    });
-    
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Add styles
-    Object.assign(notification.style, {
-        position: 'fixed',
-        top: '20px',
-        right: '20px',
-        zIndex: '9999',
-        padding: '12px 24px',
-        borderRadius: '8px',
-        color: 'white',
-        fontSize: '14px',
-        fontWeight: '500',
-        maxWidth: '300px',
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-        transform: 'translateX(100%)',
-        transition: 'transform 0.3s ease',
-        backgroundColor: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'
-    });
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
-    requestAnimationFrame(() => {
-        notification.style.transform = 'translateX(0)';
-    });
-    
-    // Remove after 5 seconds
-    setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 5000);
 }
