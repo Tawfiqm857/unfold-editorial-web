@@ -437,6 +437,78 @@ body {
     }
 }
 
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.form-actions .btn {
+    flex: 1;
+}
+
+/* Newsletter Styles */
+.newsletter-form .form-group {
+    margin-bottom: 24px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #1a202c;
+    margin-bottom: 4px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #667eea;
+    margin: 0;
+}
+
+.field-description {
+    font-size: 12px;
+    color: #6b7280;
+    margin-left: 32px;
+}
+
+.subscription-info {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(16, 185, 129, 0.1));
+    border-radius: 8px;
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.subscription-info .field-value {
+    color: #059669;
+    font-weight: 500;
+}
+
 /* Animations */
 .fade-in {
     animation: fadeIn 0.5s ease-in;
@@ -535,7 +607,8 @@ body {
         <div class="main-grid">
             <!-- Profile Section -->
             <div class="profile-section">
-                <div class="card profile-card">
+                <!-- Profile View -->
+                <div class="card profile-card" id="profile-view">
                     <div class="card-header gradient-header">
                         <h3><i class="fas fa-user"></i> Profile</h3>
                     </div>
@@ -556,14 +629,120 @@ body {
                             <p class="field-label">Address</p>
                             <p class="field-value" id="profile-address">Not provided</p>
                         </div>
-                        <button class="btn btn-outline w-full">Edit Profile</button>
+                        <div class="profile-field">
+                            <p class="field-label">City</p>
+                            <p class="field-value" id="profile-city">Not provided</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">State</p>
+                            <p class="field-value" id="profile-state">Not provided</p>
+                        </div>
+                        <div class="profile-field">
+                            <p class="field-label">Country</p>
+                            <p class="field-value" id="profile-country">Not provided</p>
+                        </div>
+                        <button id="edit-profile-btn" class="btn btn-outline w-full">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Edit Form -->
+                <div class="card profile-edit-card hidden" id="profile-edit">
+                    <div class="card-header gradient-header">
+                        <h3><i class="fas fa-edit"></i> Edit Profile</h3>
+                    </div>
+                    <div class="card-content">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label for="fullName" class="field-label">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" class="form-input" placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone" class="field-label">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" placeholder="Enter your phone number">
+                            </div>
+                            <div class="form-group">
+                                <label for="address" class="field-label">Address</label>
+                                <input type="text" id="address" name="address" class="form-input" placeholder="Enter your address">
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class="field-label">City</label>
+                                <input type="text" id="city" name="city" class="form-input" placeholder="Enter your city">
+                            </div>
+                            <div class="form-group">
+                                <label for="state" class="field-label">State</label>
+                                <input type="text" id="state" name="state" class="form-input" placeholder="Enter your state">
+                            </div>
+                            <div class="form-group">
+                                <label for="country" class="field-label">Country</label>
+                                <input type="text" id="country" name="country" class="form-input" placeholder="Enter your country">
+                            </div>
+                            <div class="form-group">
+                                <label for="bio" class="field-label">Bio</label>
+                                <textarea id="bio" name="bio" class="form-input" rows="3" placeholder="Tell us about yourself..."></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                                <button type="button" id="cancel-edit-btn" class="btn btn-outline">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Newsletter Subscription -->
+                <div class="card newsletter-card">
+                    <div class="card-header gradient-header-alt">
+                        <h3><i class="fas fa-envelope"></i> Newsletter</h3>
+                        <p class="card-description">Stay updated with our latest articles and magazine releases</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="newsletter-status" id="newsletter-status">
+                            <div class="subscription-info">
+                                <p class="field-label">Subscription Status</p>
+                                <p class="field-value" id="subscription-status">Not subscribed</p>
+                            </div>
+                        </div>
+                        <form id="newsletter-form" class="newsletter-form">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter-weekly" name="newsletters" value="weekly">
+                                    <span class="checkmark"></span>
+                                    Weekly Newsletter
+                                </label>
+                                <p class="field-description">Get our latest articles delivered weekly</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter-releases" name="newsletters" value="releases">
+                                    <span class="checkmark"></span>
+                                    New Magazine Releases
+                                </label>
+                                <p class="field-description">Be the first to know about new magazine issues</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter-promotions" name="newsletters" value="promotions">
+                                    <span class="checkmark"></span>
+                                    Special Promotions
+                                </label>
+                                <p class="field-description">Receive exclusive offers and discounts</p>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full">
+                                <i class="fas fa-paper-plane"></i> Update Preferences
+                            </button>
+                        </form>
                     </div>
                 </div>
 
                 <!-- Quick Actions -->
                 <div class="card quick-actions-card">
                     <div class="card-header gradient-header-alt">
-                        <h3>Quick Actions</h3>
+                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
                     </div>
                     <div class="card-content">
                         <button class="btn btn-primary w-full mb-3">
@@ -713,6 +892,9 @@ class DashboardApp {
         document.getElementById('profile-email').textContent = this.profile?.email || this.user?.email || 'Not provided';
         document.getElementById('profile-phone').textContent = this.profile?.phone || 'Not provided';
         document.getElementById('profile-address').textContent = this.profile?.address || 'Not provided';
+        document.getElementById('profile-city').textContent = this.profile?.city || 'Not provided';
+        document.getElementById('profile-state').textContent = this.profile?.state || 'Not provided';
+        document.getElementById('profile-country').textContent = this.profile?.country || 'Not provided';
     }
 
     renderOrders() {
@@ -799,6 +981,24 @@ class DashboardApp {
             this.signOut();
         });
 
+        // Profile editing
+        document.getElementById('edit-profile-btn').addEventListener('click', () => {
+            this.showProfileEditor();
+        });
+
+        document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+            this.hideProfileEditor();
+        });
+
+        document.getElementById('profile-form').addEventListener('submit', (e) => {
+            this.handleProfileUpdate(e);
+        });
+
+        // Newsletter subscription
+        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
+            this.handleNewsletterUpdate(e);
+        });
+
         // Quick action buttons
         document.querySelectorAll('.btn').forEach(btn => {
             if (btn.textContent.includes('Order Magazine') || btn.textContent.includes('Order Now')) {
@@ -809,11 +1009,6 @@ class DashboardApp {
             if (btn.textContent.includes('Browse Articles')) {
                 btn.addEventListener('click', () => {
                     this.navigateToArticles();
-                });
-            }
-            if (btn.textContent.includes('Edit Profile')) {
-                btn.addEventListener('click', () => {
-                    this.navigateToProfile();
                 });
             }
         });
@@ -918,6 +1113,79 @@ class DashboardApp {
         this.orders.unshift(order);
         this.renderStats();
         this.renderOrders();
+    }
+
+    // Profile editing methods
+    showProfileEditor() {
+        // Populate form with current data
+        document.getElementById('fullName').value = this.profile?.full_name || '';
+        document.getElementById('phone').value = this.profile?.phone || '';
+        document.getElementById('address').value = this.profile?.address || '';
+        document.getElementById('city').value = this.profile?.city || '';
+        document.getElementById('state').value = this.profile?.state || '';
+        document.getElementById('country').value = this.profile?.country || '';
+        document.getElementById('bio').value = this.profile?.bio || '';
+
+        // Toggle views
+        document.getElementById('profile-view').classList.add('hidden');
+        document.getElementById('profile-edit').classList.remove('hidden');
+    }
+
+    hideProfileEditor() {
+        document.getElementById('profile-view').classList.remove('hidden');
+        document.getElementById('profile-edit').classList.add('hidden');
+    }
+
+    handleProfileUpdate(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const updatedProfile = {
+            full_name: formData.get('fullName'),
+            phone: formData.get('phone'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            state: formData.get('state'),
+            country: formData.get('country'),
+            bio: formData.get('bio')
+        };
+
+        // Update profile data
+        this.profile = { ...this.profile, ...updatedProfile };
+        
+        // Re-render profile section
+        this.renderProfile();
+        this.renderHeader();
+        
+        // Hide editor and show success message
+        this.hideProfileEditor();
+        this.showToast('Profile updated successfully!', 'success');
+    }
+
+    // Newsletter subscription methods
+    handleNewsletterUpdate(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const subscriptions = formData.getAll('newsletters');
+        
+        // Update subscription status
+        const subscriptionCount = subscriptions.length;
+        const statusElement = document.getElementById('subscription-status');
+        
+        if (subscriptionCount === 0) {
+            statusElement.textContent = 'Not subscribed';
+            statusElement.style.color = '#6b7280';
+        } else {
+            statusElement.textContent = `Subscribed to ${subscriptionCount} newsletter${subscriptionCount > 1 ? 's' : ''}`;
+            statusElement.style.color = '#059669';
+        }
+        
+        // Show success message
+        this.showToast('Newsletter preferences updated!', 'success');
+        
+        // Mock API call would go here
+        console.log('Newsletter subscriptions:', subscriptions);
     }
 }
 
