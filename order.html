@@ -1,139 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Magazine - Unfold Magazine</title>
+    <title>Order Magazine - Urban Nomad Freaks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static-styles.css">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
-    <style>
-        /* Production-ready optimizations and black/white theme */
-        :root {
-            --background: hsl(0, 0%, 100%);
-            --foreground: hsl(0, 0%, 0%);
-            --card: hsl(0, 0%, 100%);
-            --card-foreground: hsl(0, 0%, 0%);
-            --primary: hsl(0, 0%, 0%);
-            --primary-foreground: hsl(0, 0%, 100%);
-            --secondary: hsl(0, 0%, 95%);
-            --secondary-foreground: hsl(0, 0%, 0%);
-            --muted: hsl(0, 0%, 95%);
-            --muted-foreground: hsl(0, 0%, 40%);
-            --border: hsl(0, 0%, 90%);
-        }
-        
-        /* Loading optimization */
-        .order-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 50vh;
-            gap: 1rem;
-        }
-        
-        .loading-spinner {
-            width: 2rem;
-            height: 2rem;
-            border: 2px solid var(--border);
-            border-top: 2px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Enhanced order UI */
-        .order-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        .order-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .order-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--foreground);
-            margin-bottom: 0.5rem;
-        }
-        
-        .order-subtitle {
-            font-size: 1.125rem;
-            color: var(--muted-foreground);
-        }
-        
-        .order-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        
-        @media (min-width: 1024px) {
-            .order-layout {
-                grid-template-columns: 1fr 2fr;
-            }
-        }
-        
-        .order-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Header improvements */
-        .header {
-            background-color: var(--background);
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .logo-text {
-            color: var(--foreground);
-        }
-        
-        .nav-link {
-            color: var(--muted-foreground);
-        }
-        
-        .nav-link:hover {
-            color: var(--foreground);
-        }
-        
-        /* Button improvements */
-        .btn-primary {
-            background-color: var(--primary);
-            color: var(--primary-foreground);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-primary:hover {
-            background-color: hsl(0, 0%, 20%);
-        }
-        
-        .order-submit-btn {
-            width: 100%;
-            padding: 1rem;
-            font-size: 1.125rem;
-        }
-    </style>
 </head>
 <body>
     <!-- Skip to main content link for accessibility -->
@@ -146,9 +21,9 @@
                 <!-- Logo -->
                 <a href="index.html" class="logo">
                     <div class="logo-icon">
-                        <span>UF</span>
+                        <span>UNF</span>
                     </div>
-                    <span class="logo-text">Unfold Magazine</span>
+                    <span class="logo-text">Urban Nomad Freaks</span>
                 </a>
 
                 <!-- Desktop Navigation -->
@@ -157,8 +32,7 @@
                     <a href="about.html" class="nav-link">About</a>
                     <a href="table-of-contents.html" class="nav-link">Table of Contents</a>
                     <a href="dashboard.html" class="nav-link">Dashboard</a>
-                    <a href="auth.html" class="nav-link">Login/Sign Up</a>
-                    <button class="btn btn-sm" id="signOutBtn" style="display: none;">Sign Out</button>
+                    <button class="btn btn-sm" id="signOutBtn">Sign Out</button>
                 </nav>
 
                 <!-- Theme Toggle -->
@@ -187,9 +61,8 @@
                 <a href="about.html" class="mobile-nav-link">About</a>
                 <a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
                 <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
-                <a href="auth.html" class="mobile-nav-link">Login/Sign Up</a>
                 <div class="mobile-nav-divider"></div>
-                <button class="btn btn-primary mobile-nav-btn" id="mobileSignOutBtn" style="display: none;">Sign Out</button>
+                <button class="btn btn-primary mobile-nav-btn" id="mobileSignOutBtn">Sign Out</button>
             </div>
         </nav>
     </header>
@@ -206,7 +79,7 @@
         <div class="order-container" id="orderContent" style="display: none;">
             <div class="order-header">
                 <h1 class="order-title">Order Magazine</h1>
-                <p class="order-subtitle">Get your printed copy of Unfold Magazine delivered to your doorstep</p>
+                <p class="order-subtitle">Get your printed copy of Urban Nomad Freaks magazine delivered to your doorstep</p>
             </div>
 
             <div class="order-layout">
@@ -218,7 +91,7 @@
                     <div class="card-content">
                         <div class="order-item">
                             <div class="item-details">
-                                <h4>Unfold Magazine (Printed)</h4>
+                                <h4>Urban Nomad Freaks Magazine (Printed)</h4>
                                 <p>Latest issue with premium print quality</p>
                             </div>
                             <div class="item-price">
@@ -317,7 +190,7 @@
         <div class="container-xl">
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    © 2024 Unfold Magazine. All rights reserved.
+                    © 2024 Urban Nomad Freaks. All rights reserved.
                 </p>
             </div>
         </div>
