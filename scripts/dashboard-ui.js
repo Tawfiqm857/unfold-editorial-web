@@ -5,7 +5,9 @@ import { formatAmount, formatDate, getStatusClass, getInitials, getActivityIcon,
 export function populateUserInfo() {
     const userName = document.getElementById('user-name');
     if (userName) {
-        userName.textContent = userProfile?.full_name || currentUser?.email || 'User';
+        // Fix: Check both profile and currentUser for name/email
+        const displayName = userProfile?.full_name || currentUser?.user_metadata?.full_name || currentUser?.email || 'User';
+        userName.textContent = displayName;
     }
     
     // Update avatar display
@@ -19,7 +21,8 @@ export function populateUserInfo() {
             avatar.style.display = 'block';
             placeholder.style.display = 'none';
         } else {
-            const nameInitials = getInitials(userProfile?.full_name || 'User');
+            const nameForInitials = userProfile?.full_name || currentUser?.user_metadata?.full_name || currentUser?.email || 'User';
+            const nameInitials = getInitials(nameForInitials);
             initials.textContent = nameInitials;
             avatar.style.display = 'none';
             placeholder.style.display = 'flex';
@@ -117,9 +120,9 @@ export function populateOrdersTab() {
 }
 
 export function populateProfileTab() {
-    // Populate profile display fields
+    // Fix: Use correct data sources for profile information
     const profileElements = {
-        'profile-name': userProfile?.full_name || 'Not provided',
+        'profile-name': userProfile?.full_name || currentUser?.user_metadata?.full_name || 'Not provided',
         'profile-email': userProfile?.email || currentUser?.email || 'Not provided',
         'profile-phone': userProfile?.phone || 'Not provided',
         'profile-address': userProfile?.address || 'Not provided',
@@ -144,7 +147,7 @@ export function populateProfileTab() {
         editBtn.addEventListener('click', () => {
             // Populate form with current data
             const formFields = {
-                'fullName': userProfile?.full_name || '',
+                'fullName': userProfile?.full_name || currentUser?.user_metadata?.full_name || '',
                 'phone': userProfile?.phone || '',
                 'address': userProfile?.address || '',
                 'city': userProfile?.city || '',

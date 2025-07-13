@@ -1,3 +1,4 @@
+
 // Dashboard data loading functions
 import { supabase, currentUser, setUserProfile, setUserOrders, setUserActivity } from './dashboard-config.js';
 
@@ -68,9 +69,6 @@ export async function loadUserData() {
         }
         
         // Show dashboard immediately with critical data
-        const loadingElement = document.getElementById('loading');
-        const dashboardElement = document.getElementById('dashboard');
-        
         if (loadingElement) loadingElement.style.display = 'none';
         if (dashboardElement) {
             dashboardElement.classList.remove('hidden');

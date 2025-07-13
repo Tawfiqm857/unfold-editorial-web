@@ -1,3 +1,4 @@
+
 // Dashboard authentication handling
 import { supabase, setCurrentUser } from './dashboard-config.js';
 
@@ -12,14 +13,18 @@ export async function checkAuth() {
         }
         
         if (!session || !session.user) {
+            console.log('No active session found, redirecting to auth');
             redirectToAuth();
             return false;
         }
         
+        console.log('User authenticated:', session.user.email);
+        console.log('User metadata:', session.user.user_metadata);
         setCurrentUser(session.user);
         
         // Listen for auth changes
         supabase.auth.onAuthStateChange((event, session) => {
+            console.log('Auth state changed:', event);
             if (event === 'SIGNED_OUT' || !session) {
                 redirectToAuth();
             }
