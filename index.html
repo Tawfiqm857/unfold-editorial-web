@@ -1,148 +1,461 @@
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unfold Magazine</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/animations.css">
-    <link rel="icon" href="public/favicon.ico" type="image/x-icon">
-    <style>
-        /* Black and white theme override */
-        :root {
-            --background: 0 0% 100%;
-            --foreground: 0 0% 0%;
-            --primary: 0 0% 0%;
-            --primary-foreground: 0 0% 100%;
-            --secondary: 0 0% 100%;
-            --secondary-foreground: 0 0% 0%;
-            --muted: 0 0% 96%;
-            --muted-foreground: 0 0% 45%;
-            --accent: 0 0% 96%;
-            --accent-foreground: 0 0% 0%;
-            --border: 0 0% 90%;
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(0 0% 20%) 100%);
-            color: hsl(0 0% 100%);
-        }
-        
-        .footer {
-            background-color: hsl(0 0% 0%);
-            color: hsl(0 0% 100%);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNFOLD MAGAZINE - Bold Stories, Purpose & Pulse</title>
+<meta name="description" content="A bold new space where stories rise, style speaks, and every page drips with purpose and pulse. Featuring Nigerian youth entrepreneurship, fashion, music, and culture.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/animations.css">
+<link rel="icon" href="public/favicon.ico" type="image/x-icon">
+
+<style>
+	.center-text{
+	text-align: center;
+	}
+</style>
 </head>
 <body>
-    <!-- Skip to main content link for accessibility -->
-    <a href="#main-content" class="skip-link sr-only">Skip to main content</a>
+<!-- Header -->
+<header class="header" id="header">
+<div class="header-container">
+<div class="header-content">
+<!-- Logo -->
+<a href="index.html" class="logo">
+<div class="logo-icon">
+<span>UF</span>
+</div>
+<span class="logo-text">UNFOLD MAGAZINE</span>
+</a>
 
-    <!-- Header -->
-    <header class="header" id="header">
-        <div class="header-container">
-            <div class="header-content">
-                <!-- Logo -->
-                <a href="index.html" class="logo">
-                    <div class="logo-icon">
-                        <span>UF</span>
-                    </div>
-                    <span class="logo-text">Unfold Magazine</span>
-                </a>
+<!-- Desktop Navigation -->
+<nav class="nav-desktop">
+<a href="index.html" class="nav-link active">Home</a>
+<a href="about.html" class="nav-link">About</a>
+<a href="table-of-contents.html" class="nav-link">Table of Contents</a>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+<svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="5"></circle>
+<path d="m12 1 0 2m0 18 0 2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12l2 0m18 0 2 0M4.22 19.78l1.42-1.42m12.72-12.72 1.42-1.42"></path>
+</svg>
+<svg class="moon-icon" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+</svg>
+</button>
+<a href="auth.html" class="btn btn-sm">Sign In</a>
+</nav>
 
-                <!-- Desktop Navigation -->
-                <nav class="nav-desktop">
-                    <a href="index.html" class="nav-link active">Home</a>
-                    <a href="about.html" class="nav-link">About</a>
-                    <a href="table-of-contents.html" class="nav-link">Table of Contents</a>
-                    <a href="dashboard.html" class="nav-link">Dashboard</a>
-                    <a href="auth.html" class="nav-link">Login/Sign Up</a>
-                </nav>
+<!-- Mobile Menu Button -->
+<button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
+<svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+</svg>
+</button>
+</div>
+</div>
 
-                <!-- Theme Toggle -->
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                    </svg>
-                </button>
+<!-- Mobile Navigation -->
+<nav class="mobile-nav" id="mobileNav">
+<div class="mobile-nav-content">
+<a href="index.html" class="mobile-nav-link">Home</a>
 
-                <!-- Mobile Menu Button -->
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
-                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
+<a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
+<div class="mobile-nav-divider"></div>
+<button class="theme-toggle" id="mobileThemeToggle" aria-label="Toggle theme">
+<svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="5"></circle>
+<path d="m12 1 0 2m0 18 0 2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M1 12l2 0m18 0 2 0M4.22 19.78l1.42-1.42m12.72-12.72 1.42-1.42"></path>
+</svg>
+<svg class="moon-icon" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+</svg>
+</button>
+<a href="auth.html" class="btn btn-primary mobile-nav-btn">Sign In</a>
+	<a href="dashboard.html" class="btn btn-sm">My Dashboard</a>
+</div>
+</nav>
+</header>
 
-        <!-- Mobile Navigation -->
-        <nav class="mobile-nav" id="mobileNav">
-            <div class="mobile-nav-content">
-                <a href="index.html" class="mobile-nav-link">Home</a>
-                <a href="about.html" class="mobile-nav-link">About</a>
-                <a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
-                <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
-                <a href="auth.html" class="mobile-nav-link">Login/Sign Up</a>
-            </div>
-        </nav>
-    </header>
+<!-- Main Content -->
+<main class="main-content" id="main-content">
+<!-- Hero Section -->
+<section class="hero-section">
+<div class="container-xl">
+<div class="hero-content fade-in">
+<h4 class="hero-title">UNFOLD <span>magazine</span></h4>
+<p class="hero-subtitle">
+A bold new space where stories rise, style speaks, and every page drips with purpose and pulse.
+</p>
+<div class="hero-buttons">
+<a href="table-of-contents.html" class="btn btn-outline">Explore</a>
+<a href="about.html" class="btn btn-primary">About Us</a>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- Main Content -->
-    <main class="main-content" id="main-content">
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title fade-in">
-                    UNFOLD <span>MAGAZINE</span>
-                </h1>
-                <p class="hero-subtitle">Discover stories that matter, voices that inspire, and perspectives that challenge the ordinary.</p>
-                <div class="hero-buttons">
-                    <a href="table-of-contents.html" class="btn btn-lg">Explore Articles</a>
-                    <a href="order.html" class="btn btn-lg btn-outline">Order Print Copy</a>
-                </div>
-            </div>
-        </section>
+<!-- Featured Article -->
+<section class="featured-article">
+<div class="container-xl">
+<div class="featured-content fade-in">
+<div class="featured-image-container">
+<a href="nigeria-youth-entrepreneurship.html" class="featured-image-link">
+<img src="images/specialIssue.jpg" alt="Nigerian Youth Entrepreneurship" class="featured-image">
+</a>
+</div>
+<div class="featured-text-container">
+<a href="#" class="featured-category">SPECIAL ISSUE</a>
+<h2 class="featured-title">Nigeria's Youth Entrepreneurship Revolution</h2>
+<p class="featured-excerpt">
+Young Nigerians aren't waiting to be "given" seats at the table—they're building new tables, 
+breaking old rules, and proving every single day that creativity + hustle is the real currency of the future.
+</p>
+<div class="featured-meta">
+<span>Merit Ikechikwu</span>
+<span class="meta-separator">•</span>
+<span>January 1, 2024</span>
+<span class="meta-separator">•</span>
+<span>8 min read</span>
+</div>
+<a href="nigeria-youth-entrepreneurship.html" class="featured-link">
+Read Article
+<svg class="link-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+</svg>
+</a>
+</div>
+</div>
+</div>
+</section>
 
-        <!-- Featured Article Section -->
-        <section class="featured-article">
-            <div class="container-lg">
-                <div class="featured-content">
-                    <div class="featured-image-container">
-                        <img src="images/specialIssue.jpg" alt="Featured Article" class="featured-image">
-                    </div>
-                    <div class="featured-text-container">
-                        <div class="section-badge">Featured Story</div>
-                        <h2 class="section-title">Voices of Tomorrow</h2>
-                        <p class="section-description">
-                            Dive into compelling narratives that explore the intersection of culture, innovation, and human experience. 
-                            Our featured stories bring you closer to the people and ideas shaping our world.
-                        </p>
-                        <a href="faces-of-the-future.html" class="btn">Read Featured Article</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+<!-- Editorial Team -->
+<section class="editorial-team">
+<div class="container-xl">
+<h2 class="section-title fade-in">Meet the Editorial Team</h2>
+<div class="team-grid">
+<div class="team-member fade-in">
+<div class="team-image">
+<img src="images/editor.jpg" alt="Bashir Suleiman">
+</div>
+<h3 class="team-name">BASHIR SULEIMAN</h3>
+<p class="team-role">Editor-in-Chief</p>
+</div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container-xl">
-            <div class="footer-bottom">
-                <p class="footer-copyright">
-                    © 2024 Unfold Magazine. All rights reserved.
-                </p>
-            </div>
-        </div>
-    </footer>
+<div class="team-member fade-in">
+<div class="team-image">
+<img src="images/merit.jpg" alt="Merit Ikechikwu">
+</div>
+<h3 class="team-name">MERIT IKECHIKWU</h3>
+<p class="team-role">Senior Corresponent</p>
+</div>
 
-    <script src="scripts/main.js"></script>
+<div class="team-member fade-in">
+<div class="team-image">
+<img src="images/sa'adatu.jpg" alt="SA'ADA ABDULMALIK">
+</div>
+<h3 class="team-name">SA'ADA ABDULMALIK</h3>
+<p class="team-role">Printing Co-odinator</p>
+</div>
+
+<div class="team-member fade-in">
+<div class="team-image">
+<img src="images/khadija.jpg" alt="Promise Jonathan">
+</div>
+<h3 class="team-name">KHADIJA SULEIMAN</h3>
+<p class="team-role">Co-Fonder & publisher</p>
+</div>
+
+
+<div class="team-member fade-in">
+<div class="team-image">
+<img src="images/munir.jpg" alt="Merit Ikechikwu">
+</div>
+<h3 class="team-name">MUNIR KARAYE</h3>
+<p class="team-role">Advertising Lead</p>
+</div>
+
+
+
+
+
+
+<div class="team-member fade-in">
+<div class="team-image">
+<img src="images/zulaifa.jpg" alt="Zuliafa Sani">
+</div>
+<h3 class="team-name">ZULAIFA SANI</h3>
+<p class="team-role">Cover Picture</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+<section class="about-hero">
+<div class="container-lg">
+<div class="about-hero-content">
+<h1 class="about-title">FROM THE EDITOR</h1>
+<p class="about-subtitle">
+Welcome to the first-ever edition of Unfold Magazine—a bold new space where stories rise, style speaks, and every page drips with purpose and pulse.
+</p>
+</div>
+</div>
+</section>
+
+<!-- Editor Section -->
+<section class="editor-section">
+<div class="container-lg">
+<div class="editor-content">
+<div>
+<p class="text-lg mb-6 center-text">
+We're launching this debut with something close to the heart and hot on the streets: 
+The Nigerian Youth Entrepreneurship Revolution. Young Nigerians aren't waiting to be "given" seats at the table—they're building 
+new tables, breaking old rules, and proving every single day that creativity + hustle is the real currency of the future.
+</p>
+
+<p class="text-lg mb-6  center-text">
+From tech whiz-kids and fashion founders to foodpreneurs, media disruptors, and silent 
+innovators—this generation is changing the game, and this issue is their spotlight.
+</p>
+<br>
+<p class="text-lg mb-6">
+But wait—we didn't stop there.
+</p>
+<br>
+<p class="text-lg mb-6  center-text">
+We take you deeper with S.H.E.E.P, a streetwear movement that's more than threads—it's a call to 
+unlock potential with every fit. In Faces of the Future, meet the young Nigerians blazing global 
+trails. Cruise Control sweeps you through dreamy homegrown destinations you must explore, while 
+Afrobeats to the World celebrates how our sound has become the planet's favorite rhythm. And if you 
+want heat? The Unfold Playlist is 20 tracks of pure 2025 magic.
+</p>
+
+<p class="text-lg mb-6  center-text">
+This is more than a magazine. It's a movement. It's the energy of a new generation—loud, proud, 
+and unstoppable.
+</p>
+
+<br>
+<p class="text-lg mb-6">
+We're so glad you're here. Now let's Unfold greatness, together.
+</p>
+
+<div class="mt-12">
+<p class="text-xl font-serif italic">
+	<img src="images/editor.jpg" width="100%" alt="Bashir Suleiman">
+ 	Bashir Suleiman</p>
+<p class="text-sm text-muted-foreground">EDITOR-IN-CHIEF</p>
+</div>
+</div>
+
+<div class="space-y-8 ">
+<div>
+<h2 class="text-2xl font-serif mb-6 center-text">CORRESPONDENCE</h2>
+
+<div class="space-y-6">
+<div class="p-6 bg-muted rounded-lg">
+<p class="text-lg mb-4 center-text">
+I'm thrilled to be part of Unfold as we kick off this exciting journey. Each page is packed with 
+passion, creativity, and stories that reflect the energy of our generation. I'm looking forward to 
+bringing you fresh perspectives and inspiring content in every issue.
+</p>
+
+<p class="text-lg mb-2">Let's unfold greatness together!</p>
+
+<p class="text-lg font-serif">
+	<img src="images/merit.jpg" width="100%" alt="Merit Ikechukwu">
+	&mdash;MERIT IKECHIKWU</p>
+</div>
+<br>
+<p class="text-lg font-serif">
+<img src="images/shahid.jpg" width="100%" alt="Shahid Abdullahi">
+</p>
+<div class="p-6 bg-muted rounded-lg">
+<p class="text-lg mb-4 center-text">
+What's good, people?! It's your guy Shahid and I'm hyped to be part of the Unfold crew! 
+This magazine? It's not just pages—it's pure vibes. I'm here to bring you gist, energy, laughs, 
+and the kind of stories that keep your screen lit.
+</p>
+
+<p class="text-lg mb-2 center-text">
+Stay locked in. We're just getting started and trust me, it's going to be a wild, fun ride!
+</p>
+
+	
+&mdash;SHAHID ABDULLAHI</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Articles Grid -->
+<section class="recent-articles">
+<div class="container-xl">
+<h2 class="section-title fade-in">Recent Stories</h2>
+
+<div class="articles-grid">
+<article class="article-card fade-in">
+<a href="sheep-streetwear.html" class="article-image-link">
+<img src="images/sheepGroupPic.jpg" alt="SHEEP Streetwear" class="article-image">
+<span class="article-category">Fashion</span>
+</a>
+<div class="article-content">
+<h3 class="article-title">
+<a href="sheep-streetwear.html">S.H.E.E.P: Superior Humans Elevating Everyone's Potential</a>
+</h3>
+<div class="article-meta">Bashir Suleiman • 5 min read</div>
+<p class="article-excerpt">
+In a world where style is often just about looking good, SHEEP dares to be different. 
+It's not just another streetwear label—it's a bold declaration.
+</p>
+</div>
+</article>
+
+<article class="article-card fade-in">
+<a href="afrobeats-to-the-world.html" class="article-image-link">
+<img src="images/afrobeats.jpg" alt="Afrobeats Music" class="article-image">
+<span class="article-category">Music</span>
+</a>
+<div class="article-content">
+<h3 class="article-title">
+<a href="afrobeats-to-the-world.html">Afrobeats to the World: The Evolution of Nigerian Music</a>
+</h3>
+<div class="article-meta">Shahid Abdullahi • 6 min read</div>
+<p class="article-excerpt">
+From smoky Lagos nights to neon-lit world stages, Afrobeats didn't arrive. It erupted. 
+This is the story of a global takeover.
+</p>
+</div>
+</article>
+
+<article class="article-card fade-in">
+<a href="cruise-control-destinations.html" class="article-image-link">
+<img src="images/zuma.jpg" alt="Nigerian Destinations" class="article-image">
+<span class="article-category">Travel</span>
+</a>
+<div class="article-content">
+<h3 class="article-title">
+<a href="cruise-control-destinations.html">Cruise Control: Dream Destinations You Can't Miss</a>
+</h3>
+<div class="article-meta">Yusufari • 4 min read</div>
+<p class="article-excerpt">
+Think Nigeria is all hustle, heat, and Lagos traffic? Think again. From crystal-clear waterfalls 
+to ancient hills and secret beaches.
+</p>
+</div>
+</article>
+
+<article class="article-card fade-in">
+<a href="faces-of-the-future.html" class="article-image-link">
+<img src="images/lumedairies.jpg" style="aspect-ratio:16/9;" alt="Young Nigerian Leaders" class="article-image">
+<span class="article-category">People</span>
+</a>
+<div class="article-content">
+<h3 class="article-title">
+<a href="faces-of-the-future.html">Faces of the Future: Young Nigerians Leading the Wave</a>
+</h3>
+<div class="article-meta">Aaron Ahmadu • 7 min read</div>
+<p class="article-excerpt">
+In a world that moves fast, these are the faces setting the pace. Young Nigerians who are 
+defining today and shaping tomorrow.
+</p>
+</div>
+</article>
+
+<article class="article-card fade-in">
+<a href="unfold-playlist.html" class="article-image-link">
+<img src="images/rema.jpg.png" alt="Afrobeat Playlist" class="article-image">
+<span class="article-category">Music</span>
+</a>
+<div class="article-content">
+<h3 class="article-title">
+<a href="unfold-playlist.html">Unfold Afrobeat Playlist</a>
+</h3>
+<div class="article-meta">Editorial Team • 3 min read</div>
+<p class="article-excerpt">
+Dive into the rhythm and energy of the best Afrobeats tracks that are defining the sound of a generation.
+</p>
+</div>
+</article>
+
+<article class="article-card fade-in">
+<a href="destination-iman.html" class="article-image-link">
+<img src="images/destinationIman.jpg" alt="Destination Iman" class="article-image">
+<span class="article-category">Travel</span>
+</a>
+<div class="article-content">
+<h3 class="article-title">
+<a href="destination-iman.html">Plan Your Umrah with Destination Iman</a>
+</h3>
+<div class="article-meta">Rosa Aguado • 4 min read</div>
+<p class="article-excerpt">
+At Destination Iman, we do more than plan trips—we curate spiritual experiences that stay with you 
+long after the journey ends.
+</p>
+</div>
+</article>
+</div>
+</div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+<div class="container-xl">
+<div class="newsletter-content fade-in">
+<h2 class="newsletter-title">Subscribe to Our Newsletter</h2>
+<p class="newsletter-subtitle">
+Get the latest articles, insights, and stories delivered to your inbox weekly.
+</p>
+
+<form class="newsletter-form" id="newsletterForm">
+<div class="newsletter-input-group">
+<input
+type="email"
+placeholder="Your email address"
+class="newsletter-input"
+required
+>
+<button type="submit" class="btn btn-primary newsletter-btn">Subscribe</button>
+</div>
+</form>
+
+<p class="newsletter-disclaimer">
+By subscribing, you agree to our Privacy Policy and consent to receive updates from our company.
+</p>
+</div>
+</div>
+</section>
+
+<!-- Featured Quote -->
+<section class="featured-quote">
+<div class="container-lg">
+<blockquote class="quote-text fade-in">
+"Born in the hustle, raised by resistance. We're the sunrise after every storm."
+</blockquote>
+</div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+<div class="container-xl">
+<div class="footer-bottom">
+<p class="footer-copyright">
+© 2024 UNFOLD MAGAZINE. All rights reserved.
+</p>
+</div>
+</div>
+</footer>
+
+<script src="scripts/main.js"></script>
 </body>
 </html>

@@ -1,65 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Unfold Magazine</title>
+    <title>About - Urban Nomad Freaks</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/components.css">
-    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="static-styles.css">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
-    <style>
-        /* Black and white theme override */
-        :root {
-            --background: 0 0% 100%;
-            --foreground: 0 0% 0%;
-            --primary: 0 0% 0%;
-            --primary-foreground: 0 0% 100%;
-            --secondary: 0 0% 100%;
-            --secondary-foreground: 0 0% 0%;
-            --muted: 0 0% 96%;
-            --muted-foreground: 0 0% 45%;
-            --accent: 0 0% 96%;
-            --accent-foreground: 0 0% 0%;
-            --border: 0 0% 90%;
-        }
-        
-        .about-hero {
-            background: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(0 0% 20%) 100%);
-            color: hsl(0 0% 100%);
-        }
-        
-        .footer {
-            background-color: hsl(0 0% 0%);
-            color: hsl(0 0% 100%);
-        }
-    </style>
 </head>
 <body>
+    <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="skip-link sr-only">Skip to main content</a>
 
+    <!-- Header -->
     <header class="header" id="header">
         <div class="header-container">
             <div class="header-content">
-                <a href="index.html" class="logo">
+                <!-- Logo -->
+                <a href="static-index.html" class="logo">
                     <div class="logo-icon">
-                        <span>UF</span>
+                        <span>UNF</span>
                     </div>
-                    <span class="logo-text">Unfold Magazine</span>
+                    <span class="logo-text">Urban Nomad Freaks</span>
                 </a>
 
+                <!-- Desktop Navigation -->
                 <nav class="nav-desktop">
-                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="static-index.html" class="nav-link">Home</a>
                     <a href="about.html" class="nav-link active">About</a>
                     <a href="table-of-contents.html" class="nav-link">Table of Contents</a>
-                    <a href="dashboard.html" class="nav-link">Dashboard</a>
-                    <a href="auth.html" class="nav-link">Login/Sign Up</a>
+                    <a href="auth.html" class="btn btn-sm">Sign In</a>
                 </nav>
 
+                <!-- Theme Toggle -->
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -69,6 +44,7 @@
                     </svg>
                 </button>
 
+                <!-- Mobile Menu Button -->
                 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
                     <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -77,94 +53,163 @@
             </div>
         </div>
 
+        <!-- Mobile Navigation -->
         <nav class="mobile-nav" id="mobileNav">
             <div class="mobile-nav-content">
-                <a href="index.html" class="mobile-nav-link">Home</a>
-                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="static-index.html" class="mobile-nav-link">Home</a>
+                <a href="about.html" class="mobile-nav-link active">About</a>
                 <a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
-                <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
-                <a href="auth.html" class="mobile-nav-link">Login/Sign Up</a>
+                <div class="mobile-nav-divider"></div>
+                <a href="auth.html" class="btn btn-primary mobile-nav-btn">Sign In</a>
             </div>
         </nav>
     </header>
 
+    <!-- Main Content -->
     <main class="main-content" id="main-content">
-        <section class="about-hero">
-            <div class="about-hero-content">
-                <h1 class="about-title">About Unfold Magazine</h1>
-                <p class="about-subtitle">
-                    We tell stories that matter, amplify voices that inspire, and explore perspectives that challenge conventional thinking.
-                </p>
-            </div>
-        </section>
-
-        <section class="editor-section">
-            <div class="container-lg">
-                <div class="editor-content">
-                    <div class="editor-image">
-                        <img src="images/editor.jpg" alt="Editor" class="rounded-image">
+        <div class="container-lg section-padding">
+            <div class="about-layout">
+                <div class="about-content">
+                    <h1 class="page-title">FROM THE EDITOR</h1>
+                    
+                    <div class="prose">
+                        <p>
+                            Welcome to the first-ever edition of Unfold Magazine - a bold new space where stories rise, 
+                            style speaks, and every page drips with purpose and pulse.
+                        </p>
+                        
+                        <p>
+                            We're launching this debut with something close to the heart and hot on the streets: 
+                            The Nigerian Youth Entrepreneurship Revolution. Young Nigerians aren't waiting to be "given" seats at the table—they're building 
+                            new tables, breaking old rules, and proving every single day that creativity + hustle is the real currency of the future.
+                        </p>
+                        
+                        <p>
+                            From tech whiz-kids and fashion founders to foodpreneurs, media disruptors, and silent 
+                            innovators this generation is changing the game, and this issue is their spotlight.
+                        </p>
+                        
+                        <p>
+                            But wait we didn't stop there.
+                        </p>
+                        
+                        <p>
+                            We take you deeper with S.H.E.E.P, a streetwear movement that's more than threads—it's a call to 
+                            unlock potential with every fit. In Faces of the Future, meet the young Nigerians blazing global 
+                            trails. Cruise Control sweeps you through dreamy homegrown destinations you must explore, while 
+                            Afrobeats to the World celebrates how our sound has become the planet's favorite rhythm. And if you 
+                            want heat? The Unfold Playlist is 20 tracks of pure 2025 magic.
+                        </p>
+                        
+                        <p>
+                            This is more than a magazine. It's a movement. It's the energy of a new generation loud, proud, 
+                            and unstoppable.
+                        </p>
+                        
+                        <p>
+                            We're so glad you're here. Now let's Unfold greatness, together.
+                        </p>
+                        
+                        <div class="editor-signature">
+                            <p class="signature-name">Bashir Suleiman</p>
+                            <p class="signature-title">EDITOR-IN-CHIEF</p>
+                        </div>
                     </div>
-                    <div class="editor-text">
-                        <h2 class="section-title">From the Editor</h2>
-                        <p class="section-description">
-                            Welcome to Unfold Magazine, where every story is a journey of discovery. Our mission is to uncover the narratives that shape our world, celebrate diverse voices, and challenge readers to think beyond the ordinary.
-                        </p>
-                        <p class="section-description">
-                            Founded on the belief that great stories have the power to transform perspectives, we curate content that spans culture, innovation, arts, and human experience. Each issue is carefully crafted to offer you insights that inform, inspire, and ignite curiosity.
-                        </p>
-                        <a href="from-the-editor.html" class="btn">Read Editor's Note</a>
+                </div>
+                
+                <div class="about-sidebar">
+                    <div class="sidebar-section">
+                        <h2 class="sidebar-title">CORRESPONDENCE</h2>
+                        
+                        <div class="correspondence-items">
+                            <div class="correspondence-item">
+                                <div class="prose">
+                                    <p>
+                                        I'm thrilled to be part of Unfold as we kick off this exciting journey. Each page is packed with 
+                                        passion, creativity, and stories that reflect the energy of our generation. I'm looking forward to 
+                                        bringing you fresh perspectives and inspiring content in every issue.
+                                    </p>
+                                    
+                                    <p>Let's unfold greatness together!</p>
+                                </div>
+                                
+                                <div class="author-name">MERIT IKECHIKWU</div>
+                            </div>
+                            
+                            <div class="correspondence-item">
+                                <div class="prose">
+                                    <p>
+                                        What's good, people?! It's your guy Shahid and I'm hyped to be part of the Unfold crew! 
+                                        This magazine? It's not just pages—it's pure vibes. I'm here to bring you gist, energy, laughs, 
+                                        and the kind of stories that keep your screen lit.
+                                    </p>
+                                    
+                                    <p>
+                                        Stay locked in. We're just getting started and trust me, it's going to be a wild, fun ride!
+                                    </p>
+                                </div>
+                                
+                                <div class="author-name">SHAHID ABDULLAHI</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h2 class="sidebar-title">CREDITS</h2>
+                        
+                        <div class="credits-grid">
+                            <div class="credits-column">
+                                <div class="credit-item">
+                                    <div class="credit-role">EDITOR-IN-CHIEF</div>
+                                    <div class="credit-name">BASHIR SULEIMAN</div>
+                                </div>
+                                
+                                <div class="credit-item">
+                                    <div class="credit-role">MANAGING EDITOR</div>
+                                    <div class="credit-name">MERIT IKECHIKWU</div>
+                                </div>
+                                
+                                <div class="credit-item">
+                                    <div class="credit-role">CONTENT DIRECTOR</div>
+                                    <div class="credit-name">SHAHID ABDULLAHI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="credits-column">
+                                <div class="credit-item">
+                                    <div class="credit-role">ART DIRECTION</div>
+                                    <div class="credit-name">PROMISE JONATHAN</div>
+                                </div>
+                                
+                                <div class="credit-item">
+                                    <div class="credit-role">CONTRIBUTING WRITERS</div>
+                                    <div class="credit-name">AARON AHMADU</div>
+                                    <div class="credit-name">ROSA AGUADO</div>
+                                </div>
+                                
+                                <div class="credit-item">
+                                    <div class="credit-role">COVER PICTURE</div>
+                                    <div class="credit-name">ZULAIFAH SANI (ZULS)</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section class="team-section">
-            <div class="container-lg">
-                <h2 class="section-title text-center">Our Team</h2>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="images/editor.jpg" alt="Editor">
-                        </div>
-                        <h3 class="team-name">Sarah Johnson</h3>
-                        <p class="team-role">Editor-in-Chief</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="images/editor.jpg" alt="Writer">
-                        </div>
-                        <h3 class="team-name">Marcus Chen</h3>
-                        <p class="team-role">Senior Writer</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="images/editor.jpg" alt="Designer">
-                        </div>
-                        <h3 class="team-name">Elena Rodriguez</h3>
-                        <p class="team-role">Creative Director</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-image">
-                            <img src="images/editor.jpg" alt="Photographer">
-                        </div>
-                        <h3 class="team-name">David Kim</h3>
-                        <p class="team-role">Photographer</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container-xl">
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    © 2024 Unfold Magazine. All rights reserved.
+                    © 2024 Urban Nomad Freaks. All rights reserved.
                 </p>
             </div>
         </div>
     </footer>
 
-    <script src="scripts/main.js"></script>
+    <script src="static-script.js"></script>
 </body>
 </html>
