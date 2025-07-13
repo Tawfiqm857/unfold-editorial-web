@@ -1,14 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Table of Contents - Urban Nomad Freaks</title>
+    <title>Table of Contents - Unfold Magazine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static-styles.css">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
+    <style>
+        /* Black and white theme override */
+        :root {
+            --background: hsl(0, 0%, 100%);
+            --foreground: hsl(0, 0%, 0%);
+            --primary: hsl(0, 0%, 0%);
+            --primary-foreground: hsl(0, 0%, 100%);
+            --secondary: hsl(0, 0%, 95%);
+            --muted: hsl(0, 0%, 95%);
+            --muted-foreground: hsl(0, 0%, 40%);
+            --border: hsl(0, 0%, 90%);
+        }
+    </style>
 </head>
 <body>
     <!-- Skip to main content link for accessibility -->
@@ -19,19 +33,20 @@
         <div class="header-container">
             <div class="header-content">
                 <!-- Logo -->
-                <a href="static-index.html" class="logo">
+                <a href="index.html" class="logo">
                     <div class="logo-icon">
-                        <span>UNF</span>
+                        <span>UF</span>
                     </div>
-                    <span class="logo-text">Urban Nomad Freaks</span>
+                    <span class="logo-text">Unfold Magazine</span>
                 </a>
 
                 <!-- Desktop Navigation -->
                 <nav class="nav-desktop">
-                    <a href="static-index.html" class="nav-link">Home</a>
+                    <a href="index.html" class="nav-link">Home</a>
                     <a href="about.html" class="nav-link">About</a>
                     <a href="table-of-contents.html" class="nav-link active">Table of Contents</a>
-                    <a href="auth.html" class="btn btn-sm">Sign In</a>
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="auth.html" class="nav-link">Login/Sign Up</a>
                 </nav>
 
                 <!-- Theme Toggle -->
@@ -56,11 +71,11 @@
         <!-- Mobile Navigation -->
         <nav class="mobile-nav" id="mobileNav">
             <div class="mobile-nav-content">
-                <a href="static-index.html" class="mobile-nav-link">Home</a>
+                <a href="index.html" class="mobile-nav-link">Home</a>
                 <a href="about.html" class="mobile-nav-link">About</a>
-                <a href="table-of-contents.html" class="mobile-nav-link active">Table of Contents</a>
-                <div class="mobile-nav-divider"></div>
-                <a href="auth.html" class="btn btn-primary mobile-nav-btn">Sign In</a>
+                <a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
+                <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                <a href="auth.html" class="mobile-nav-link">Login/Sign Up</a>
             </div>
         </nav>
     </header>
@@ -135,7 +150,7 @@
         <div class="container-xl">
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    © 2024 Urban Nomad Freaks. All rights reserved.
+                    © 2024 Unfold Magazine. All rights reserved.
                 </p>
             </div>
         </div>

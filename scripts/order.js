@@ -1,4 +1,5 @@
-// Order JavaScript with Supabase integration
+
+// Order JavaScript with Supabase integration - Optimized for production
 import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
 
 const supabaseUrl = 'https://atwlsvlzejxitpsltapl.supabase.co';
@@ -10,56 +11,61 @@ let currentUser = null;
 let userProfile = null;
 const magazinePrice = 2500; // ₦25.00 in kobo
 
+// Fast initialization
 document.addEventListener('DOMContentLoaded', async function() {
-    // Check authentication
-    await checkAuth();
+    // Show form immediately while checking auth in background
+    showOrderForm();
     
-    if (currentUser) {
-        await loadUserProfile();
-        initializeOrderForm();
-    }
+    // Check authentication asynchronously
+    checkAuthAsync();
+    
+    // Initialize form handlers immediately
+    initializeOrderForm();
 });
 
-async function checkAuth() {
+async function showOrderForm() {
+    // Hide loading and show content immediately for better UX
+    document.getElementById('orderLoading').style.display = 'none';
+    document.getElementById('orderContent').style.display = 'block';
+}
+
+async function checkAuthAsync() {
     try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
             console.error('Auth error:', error);
-            redirectToAuth();
             return;
         }
         
-        if (!session || !session.user) {
-            redirectToAuth();
-            return;
+        if (session && session.user) {
+            currentUser = session.user;
+            document.getElementById('signOutBtn').style.display = 'block';
+            document.getElementById('mobileSignOutBtn').style.display = 'block';
+            
+            // Load user profile in background
+            loadUserProfileAsync();
         }
-        
-        currentUser = session.user;
         
         // Listen for auth changes
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_OUT' || !session) {
-                redirectToAuth();
+                document.getElementById('signOutBtn').style.display = 'none';
+                document.getElementById('mobileSignOutBtn').style.display = 'none';
+            } else if (session && session.user) {
+                currentUser = session.user;
+                document.getElementById('signOutBtn').style.display = 'block';
+                document.getElementById('mobileSignOutBtn').style.display = 'block';
             }
         });
         
     } catch (error) {
         console.error('Auth check failed:', error);
-        redirectToAuth();
     }
 }
 
-function redirectToAuth() {
-    window.location.href = 'auth.html';
-}
-
-async function loadUserProfile() {
+async function loadUserProfileAsync() {
     try {
-        // Show loading state
-        document.getElementById('orderLoading').style.display = 'flex';
-        document.getElementById('orderContent').style.display = 'none';
-        
         // Load user profile
         const { data: profile, error: profileError } = await supabase
             .from('profiles')
@@ -71,19 +77,16 @@ async function loadUserProfile() {
             console.error('Profile error:', profileError);
         } else if (profile) {
             userProfile = profile;
+            // Pre-fill form with user data
+            prefillForm();
         }
         
     } catch (error) {
         console.error('Error loading user profile:', error);
-    } finally {
-        // Hide loading state
-        document.getElementById('orderLoading').style.display = 'none';
-        document.getElementById('orderContent').style.display = 'block';
     }
 }
 
-function initializeOrderForm() {
-    // Pre-fill form with user profile data
+function prefillForm() {
     if (userProfile) {
         document.getElementById('fullName').value = userProfile.full_name || '';
         document.getElementById('phone').value = userProfile.phone || '';
@@ -92,7 +95,9 @@ function initializeOrderForm() {
         document.getElementById('state').value = userProfile.state || '';
         document.getElementById('country').value = userProfile.country || 'Nigeria';
     }
-    
+}
+
+function initializeOrderForm() {
     // Setup form handlers
     const orderForm = document.getElementById('orderForm');
     const quantitySelect = document.getElementById('quantity');
@@ -158,7 +163,7 @@ async function handleOrderSubmit(e) {
         const { data: order, error: orderError } = await supabase
             .from('orders')
             .insert({
-                user_id: currentUser.id,
+                user_id: currentUser?.id || null,
                 order_number: orderNumber,
                 quantity: orderData.quantity,
                 total_amount: total,
@@ -178,16 +183,21 @@ async function handleOrderSubmit(e) {
             throw orderError;
         }
         
-        // Log order creation activity
-        await logActivity('order_created', { order_id: order.id, order_number: orderNumber });
+        // Log order creation activity if user is logged in
+        if (currentUser) {
+            await logActivity('order_created', { order_id: order.id, order_number: orderNumber });
+        }
         
-        // In a real implementation, you would integrate with a payment processor
-        // For now, we'll simulate a successful order creation
+        // Show success message
         showNotification('Order created successfully! Payment integration coming soon.', 'success');
         
         // Redirect to dashboard after a delay
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            if (currentUser) {
+                window.location.href = 'dashboard.html';
+            } else {
+                window.location.href = 'auth.html';
+            }
         }, 2000);
         
     } catch (error) {
@@ -199,13 +209,17 @@ async function handleOrderSubmit(e) {
 }
 
 async function handleSignOut() {
-    await logActivity('user_logout');
+    if (currentUser) {
+        await logActivity('user_logout');
+    }
     await supabase.auth.signOut();
     localStorage.removeItem('authRemember');
     window.location.href = 'index.html';
 }
 
 async function logActivity(action, details = {}) {
+    if (!currentUser) return;
+    
     try {
         await supabase
             .from('activity_logs')
@@ -241,6 +255,11 @@ function showError(message) {
     const errorEl = document.getElementById('orderError');
     errorEl.textContent = message;
     errorEl.style.display = 'block';
+    errorEl.style.color = '#000';
+    errorEl.style.backgroundColor = '#f5f5f5';
+    errorEl.style.padding = '0.75rem';
+    errorEl.style.borderRadius = '4px';
+    errorEl.style.border = '1px solid #ccc';
 }
 
 function hideError() {
@@ -266,7 +285,7 @@ function showNotification(message, type = 'info') {
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Add styles
+    // Add styles with black/white theme
     Object.assign(notification.style, {
         position: 'fixed',
         top: '20px',
@@ -274,14 +293,15 @@ function showNotification(message, type = 'info') {
         zIndex: '9999',
         padding: '12px 24px',
         borderRadius: '8px',
-        color: 'white',
+        color: type === 'success' ? '#000' : '#000',
         fontSize: '14px',
         fontWeight: '500',
         maxWidth: '300px',
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
         transform: 'translateX(100%)',
         transition: 'transform 0.3s ease',
-        backgroundColor: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'
+        backgroundColor: type === 'success' ? '#f0f0f0' : '#f5f5f5',
+        border: '1px solid #ccc'
     });
     
     document.body.appendChild(notification);
