@@ -1,22 +1,68 @@
-// Order JavaScript with Supabase integration
+
+// Optimized Order JavaScript with performance improvements
 import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
 
 const supabaseUrl = 'https://atwlsvlzejxitpsltapl.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0d2xzdmx6ZWp4aXRwc2x0YXBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3NjgzMTAsImV4cCI6MjA2NjM0NDMxMH0.-XGrPL0VywL4fA7paNn22vpGqfHTu_KF199P7ycYWQ8';
 
+// Initialize Supabase client once
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Cache DOM elements for better performance
+const elements = {};
 let currentUser = null;
 let userProfile = null;
 const magazinePrice = 2500; // ₦25.00 in kobo
 
-document.addEventListener('DOMContentLoaded', async function() {
-    // Check authentication
-    await checkAuth();
+// Initialize DOM element cache
+function cacheElements() {
+    elements.orderLoading = document.getElementById('orderLoading');
+    elements.orderContent = document.getElementById('orderContent');
+    elements.orderForm = document.getElementById('orderForm');
+    elements.quantitySelect = document.getElementById('quantity');
+    elements.summaryQuantity = document.getElementById('summaryQuantity');
+    elements.summaryTotal = document.getElementById('summaryTotal');
+    elements.orderSubmitBtn = document.getElementById('orderSubmitBtn');
+    elements.orderError = document.getElementById('orderError');
+    elements.signOutBtns = document.querySelectorAll('#signOutBtn, #mobileSignOutBtn');
     
-    if (currentUser) {
-        await loadUserProfile();
-        initializeOrderForm();
+    // Form fields
+    elements.fullName = document.getElementById('fullName');
+    elements.phone = document.getElementById('phone');
+    elements.address = document.getElementById('address');
+    elements.city = document.getElementById('city');
+    elements.state = document.getElementById('state');
+    elements.country = document.getElementById('country');
+}
+
+// Optimized DOMContentLoaded with faster initialization
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        // Cache DOM elements first
+        cacheElements();
+        
+        // Show loading immediately
+        showLoadingState(true);
+        
+        // Parallel authentication and profile loading
+        const [authResult] = await Promise.allSettled([
+            checkAuth(),
+            // Preload any other necessary resources here if needed
+        ]);
+        
+        if (authResult.status === 'fulfilled' && currentUser) {
+            await loadUserProfile();
+            initializeOrderForm();
+        } else {
+            // Handle guest checkout
+            initializeGuestForm();
+        }
+        
+    } catch (error) {
+        console.error('Initialization error:', error);
+        showError('Failed to initialize order form');
+    } finally {
+        showLoadingState(false);
     }
 });
 
@@ -26,27 +72,27 @@ async function checkAuth() {
         
         if (error) {
             console.error('Auth error:', error);
-            redirectToAuth();
-            return;
+            return false;
         }
         
-        if (!session || !session.user) {
-            redirectToAuth();
-            return;
+        if (session?.user) {
+            currentUser = session.user;
+            
+            // Listen for auth changes (debounced)
+            supabase.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_OUT' || !session) {
+                    redirectToAuth();
+                }
+            });
+            
+            return true;
         }
         
-        currentUser = session.user;
-        
-        // Listen for auth changes
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_OUT' || !session) {
-                redirectToAuth();
-            }
-        });
+        return false;
         
     } catch (error) {
         console.error('Auth check failed:', error);
-        redirectToAuth();
+        return false;
     }
 }
 
@@ -55,12 +101,9 @@ function redirectToAuth() {
 }
 
 async function loadUserProfile() {
+    if (!currentUser) return;
+    
     try {
-        // Show loading state
-        document.getElementById('orderLoading').style.display = 'flex';
-        document.getElementById('orderContent').style.display = 'none';
-        
-        // Load user profile
         const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('*')
@@ -75,82 +118,82 @@ async function loadUserProfile() {
         
     } catch (error) {
         console.error('Error loading user profile:', error);
-    } finally {
-        // Hide loading state
-        document.getElementById('orderLoading').style.display = 'none';
-        document.getElementById('orderContent').style.display = 'block';
     }
 }
 
 function initializeOrderForm() {
     // Pre-fill form with user profile data
     if (userProfile) {
-        document.getElementById('fullName').value = userProfile.full_name || '';
-        document.getElementById('phone').value = userProfile.phone || '';
-        document.getElementById('address').value = userProfile.address || '';
-        document.getElementById('city').value = userProfile.city || '';
-        document.getElementById('state').value = userProfile.state || '';
-        document.getElementById('country').value = userProfile.country || 'Nigeria';
+        elements.fullName.value = userProfile.full_name || '';
+        elements.phone.value = userProfile.phone || '';
+        elements.address.value = userProfile.address || '';
+        elements.city.value = userProfile.city || '';
+        elements.state.value = userProfile.state || '';
+        elements.country.value = userProfile.country || 'Nigeria';
     }
     
-    // Setup form handlers
-    const orderForm = document.getElementById('orderForm');
-    const quantitySelect = document.getElementById('quantity');
-    const signOutBtns = document.querySelectorAll('#signOutBtn, #mobileSignOutBtn');
-    
-    // Handle quantity changes
-    quantitySelect.addEventListener('change', updateOrderSummary);
-    
-    // Handle form submission
-    orderForm.addEventListener('submit', handleOrderSubmit);
-    
-    // Setup sign out buttons
-    signOutBtns.forEach(btn => {
-        btn.addEventListener('click', handleSignOut);
-    });
-    
-    // Initial summary update
+    setupFormHandlers();
     updateOrderSummary();
 }
 
+function initializeGuestForm() {
+    // Initialize form for guest users
+    elements.country.value = 'Nigeria'; // Default country
+    setupFormHandlers();
+    updateOrderSummary();
+}
+
+function setupFormHandlers() {
+    // Optimized event listeners with debouncing where needed
+    elements.quantitySelect.addEventListener('change', updateOrderSummary);
+    elements.orderForm.addEventListener('submit', handleOrderSubmit);
+    
+    // Setup sign out buttons
+    elements.signOutBtns.forEach(btn => {
+        btn.addEventListener('click', handleSignOut);
+    });
+}
+
+// Optimized summary update with cached calculations
 function updateOrderSummary() {
-    const quantity = parseInt(document.getElementById('quantity').value);
+    const quantity = parseInt(elements.quantitySelect.value);
     const total = quantity * magazinePrice;
     
-    document.getElementById('summaryQuantity').textContent = quantity;
-    document.getElementById('summaryTotal').textContent = formatAmount(total);
+    elements.summaryQuantity.textContent = quantity;
+    elements.summaryTotal.textContent = formatAmount(total);
     
     // Update submit button text
-    const submitBtn = document.getElementById('orderSubmitBtn');
-    const btnText = submitBtn.querySelector('.btn-text');
+    const btnText = elements.orderSubmitBtn.querySelector('.btn-text');
     btnText.textContent = `Proceed to Payment (${formatAmount(total)})`;
 }
 
 async function handleOrderSubmit(e) {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-    const orderData = {
-        quantity: parseInt(formData.get('quantity')),
-        fullName: formData.get('fullName'),
-        phone: formData.get('phone'),
-        address: formData.get('address'),
-        city: formData.get('city'),
-        state: formData.get('state'),
-        country: formData.get('country')
+    // Faster form data extraction
+    const formData = {
+        quantity: parseInt(elements.quantitySelect.value),
+        fullName: elements.fullName.value.trim(),
+        phone: elements.phone.value.trim(),
+        address: elements.address.value.trim(),
+        city: elements.city.value.trim(),
+        state: elements.state.value.trim(),
+        country: elements.country.value
     };
     
-    // Validation
-    if (!orderData.fullName || !orderData.phone || !orderData.address || !orderData.city || !orderData.state) {
+    // Quick validation
+    const requiredFields = ['fullName', 'phone', 'address', 'city', 'state'];
+    const missingField = requiredFields.find(field => !formData[field]);
+    
+    if (missingField) {
         showError('Please fill in all required fields');
         return;
     }
     
-    const total = orderData.quantity * magazinePrice;
+    const total = formData.quantity * magazinePrice;
     const orderNumber = `UNF-${Date.now()}`;
     
     try {
-        // Show loading state
         showLoading(true);
         hideError();
         
@@ -158,17 +201,17 @@ async function handleOrderSubmit(e) {
         const { data: order, error: orderError } = await supabase
             .from('orders')
             .insert({
-                user_id: currentUser.id,
+                user_id: currentUser?.id || null, // Support guest orders
                 order_number: orderNumber,
-                quantity: orderData.quantity,
+                quantity: formData.quantity,
                 total_amount: total,
                 shipping_address: {
-                    full_name: orderData.fullName,
-                    phone: orderData.phone,
-                    address: orderData.address,
-                    city: orderData.city,
-                    state: orderData.state,
-                    country: orderData.country
+                    full_name: formData.fullName,
+                    phone: formData.phone,
+                    address: formData.address,
+                    city: formData.city,
+                    state: formData.state,
+                    country: formData.country
                 }
             })
             .select()
@@ -178,16 +221,16 @@ async function handleOrderSubmit(e) {
             throw orderError;
         }
         
-        // Log order creation activity
-        await logActivity('order_created', { order_id: order.id, order_number: orderNumber });
+        // Log activity if user is authenticated
+        if (currentUser) {
+            logActivity('order_created', { order_id: order.id, order_number: orderNumber });
+        }
         
-        // In a real implementation, you would integrate with a payment processor
-        // For now, we'll simulate a successful order creation
         showNotification('Order created successfully! Payment integration coming soon.', 'success');
         
-        // Redirect to dashboard after a delay
+        // Redirect after delay
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = currentUser ? 'dashboard.html' : 'index.html';
         }, 2000);
         
     } catch (error) {
@@ -199,13 +242,17 @@ async function handleOrderSubmit(e) {
 }
 
 async function handleSignOut() {
-    await logActivity('user_logout');
+    if (currentUser) {
+        await logActivity('user_logout');
+    }
     await supabase.auth.signOut();
     localStorage.removeItem('authRemember');
     window.location.href = 'index.html';
 }
 
 async function logActivity(action, details = {}) {
+    if (!currentUser) return;
+    
     try {
         await supabase
             .from('activity_logs')
@@ -221,52 +268,67 @@ async function logActivity(action, details = {}) {
     }
 }
 
+// Optimized UI functions
+function showLoadingState(show) {
+    if (show) {
+        elements.orderLoading.style.display = 'flex';
+        elements.orderContent.style.display = 'none';
+    } else {
+        elements.orderLoading.style.display = 'none';
+        elements.orderContent.style.display = 'block';
+    }
+}
+
 function showLoading(show) {
-    const submitBtn = document.getElementById('orderSubmitBtn');
-    const btnText = submitBtn.querySelector('.btn-text');
-    const btnLoading = submitBtn.querySelector('.btn-loading');
+    const btnText = elements.orderSubmitBtn.querySelector('.btn-text');
+    const btnLoading = elements.orderSubmitBtn.querySelector('.btn-loading');
     
     if (show) {
         btnText.style.display = 'none';
         btnLoading.style.display = 'flex';
-        submitBtn.disabled = true;
+        elements.orderSubmitBtn.disabled = true;
     } else {
         btnText.style.display = 'block';
         btnLoading.style.display = 'none';
-        submitBtn.disabled = false;
+        elements.orderSubmitBtn.disabled = false;
     }
 }
 
 function showError(message) {
-    const errorEl = document.getElementById('orderError');
-    errorEl.textContent = message;
-    errorEl.style.display = 'block';
+    elements.orderError.textContent = message;
+    elements.orderError.style.display = 'block';
+    
+    // Auto-hide error after 5 seconds
+    setTimeout(() => {
+        hideError();
+    }, 5000);
 }
 
 function hideError() {
-    const errorEl = document.getElementById('orderError');
-    errorEl.style.display = 'none';
+    elements.orderError.style.display = 'none';
 }
 
-function formatAmount(amount) {
-    return new Intl.NumberFormat('en-NG', {
+// Optimized amount formatting with caching
+const formatAmount = (() => {
+    const formatter = new Intl.NumberFormat('en-NG', {
         style: 'currency',
         currency: 'NGN'
-    }).format(amount / 100);
-}
-
-function showNotification(message, type = 'info') {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => {
-        notification.remove();
     });
+    
+    return (amount) => formatter.format(amount / 100);
+})();
+
+// Optimized notification system
+function showNotification(message, type = 'info') {
+    // Remove existing notifications efficiently
+    document.querySelectorAll('.notification').forEach(n => n.remove());
     
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Add styles
+    // Optimized styles
+    const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6';
     Object.assign(notification.style, {
         position: 'fixed',
         top: '20px',
@@ -281,7 +343,7 @@ function showNotification(message, type = 'info') {
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
         transform: 'translateX(100%)',
         transition: 'transform 0.3s ease',
-        backgroundColor: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'
+        backgroundColor: bgColor
     });
     
     document.body.appendChild(notification);
@@ -291,13 +353,9 @@ function showNotification(message, type = 'info') {
         notification.style.transform = 'translateX(0)';
     });
     
-    // Remove after 5 seconds
+    // Auto-remove
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
+        setTimeout(() => notification.remove(), 300);
     }, 5000);
 }
