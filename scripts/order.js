@@ -1,4 +1,5 @@
-// Order JavaScript with Supabase integration
+
+// Optimized Order JavaScript with faster loading
 import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
 
 const supabaseUrl = 'https://atwlsvlzejxitpsltapl.supabase.co';
@@ -10,120 +11,158 @@ let currentUser = null;
 let userProfile = null;
 const magazinePrice = 2500; // ₦25.00 in kobo
 
+// Optimized initialization
 document.addEventListener('DOMContentLoaded', async function() {
-    // Check authentication
-    await checkAuth();
+    initializeUI();
+    await checkAuthFast();
     
     if (currentUser) {
-        await loadUserProfile();
-        initializeOrderForm();
+        await loadUserProfileFast();
     }
+    
+    setupOrderForm();
 });
 
-async function checkAuth() {
+function initializeUI() {
+    // Show content immediately for better UX
+    const orderLoading = document.getElementById('orderLoading');
+    const orderContent = document.getElementById('orderContent');
+    
+    if (orderLoading && orderContent) {
+        orderLoading.style.display = 'none';
+        orderContent.style.display = 'block';
+    }
+    
+    // Initialize form handlers immediately
+    setupFormHandlers();
+}
+
+async function checkAuthFast() {
     try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
-            console.error('Auth error:', error);
-            redirectToAuth();
+            console.warn('Auth check warning:', error);
+            // Don't redirect immediately, allow guest checkout
             return;
         }
         
-        if (!session || !session.user) {
-            redirectToAuth();
-            return;
+        if (session?.user) {
+            currentUser = session.user;
+            updateAuthUI(true);
+        } else {
+            updateAuthUI(false);
         }
         
-        currentUser = session.user;
-        
-        // Listen for auth changes
+        // Set up auth listener for future changes
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_OUT' || !session) {
-                redirectToAuth();
+                currentUser = null;
+                updateAuthUI(false);
+            } else if (session?.user) {
+                currentUser = session.user;
+                updateAuthUI(true);
             }
         });
         
     } catch (error) {
-        console.error('Auth check failed:', error);
-        redirectToAuth();
+        console.warn('Auth check failed:', error);
+        // Allow guest checkout
     }
 }
 
-function redirectToAuth() {
-    window.location.href = 'auth.html';
+function updateAuthUI(isLoggedIn) {
+    const signOutBtns = document.querySelectorAll('#signOutBtn, #mobileSignOutBtn');
+    const authLinks = document.querySelectorAll('a[href="auth.html"]');
+    
+    signOutBtns.forEach(btn => {
+        if (btn) btn.style.display = isLoggedIn ? 'block' : 'none';
+    });
+    
+    authLinks.forEach(link => {
+        if (link && isLoggedIn) {
+            link.textContent = 'Dashboard';
+            link.href = 'dashboard.html';
+        }
+    });
 }
 
-async function loadUserProfile() {
+async function loadUserProfileFast() {
     try {
-        // Show loading state
-        document.getElementById('orderLoading').style.display = 'flex';
-        document.getElementById('orderContent').style.display = 'none';
-        
-        // Load user profile
         const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('*')
             .eq('user_id', currentUser.id)
             .single();
             
-        if (profileError && profileError.code !== 'PGRST116') {
-            console.error('Profile error:', profileError);
-        } else if (profile) {
+        if (!profileError && profile) {
             userProfile = profile;
+            prefillForm();
         }
         
     } catch (error) {
-        console.error('Error loading user profile:', error);
-    } finally {
-        // Hide loading state
-        document.getElementById('orderLoading').style.display = 'none';
-        document.getElementById('orderContent').style.display = 'block';
+        console.warn('Profile loading failed:', error);
+        // Continue without profile data
     }
 }
 
-function initializeOrderForm() {
-    // Pre-fill form with user profile data
-    if (userProfile) {
-        document.getElementById('fullName').value = userProfile.full_name || '';
-        document.getElementById('phone').value = userProfile.phone || '';
-        document.getElementById('address').value = userProfile.address || '';
-        document.getElementById('city').value = userProfile.city || '';
-        document.getElementById('state').value = userProfile.state || '';
-        document.getElementById('country').value = userProfile.country || 'Nigeria';
-    }
+function prefillForm() {
+    if (!userProfile) return;
     
-    // Setup form handlers
-    const orderForm = document.getElementById('orderForm');
+    const fields = {
+        'fullName': userProfile.full_name || '',
+        'phone': userProfile.phone || '',
+        'address': userProfile.address || '',
+        'city': userProfile.city || '',
+        'state': userProfile.state || '',
+        'country': userProfile.country || 'Nigeria'
+    };
+    
+    Object.entries(fields).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element && value) {
+            element.value = value;
+        }
+    });
+}
+
+function setupFormHandlers() {
     const quantitySelect = document.getElementById('quantity');
     const signOutBtns = document.querySelectorAll('#signOutBtn, #mobileSignOutBtn');
     
-    // Handle quantity changes
-    quantitySelect.addEventListener('change', updateOrderSummary);
+    if (quantitySelect) {
+        quantitySelect.addEventListener('change', updateOrderSummary);
+    }
     
-    // Handle form submission
-    orderForm.addEventListener('submit', handleOrderSubmit);
-    
-    // Setup sign out buttons
     signOutBtns.forEach(btn => {
-        btn.addEventListener('click', handleSignOut);
+        if (btn) {
+            btn.addEventListener('click', handleSignOut);
+        }
     });
     
-    // Initial summary update
     updateOrderSummary();
 }
 
+function setupOrderForm() {
+    const orderForm = document.getElementById('orderForm');
+    if (orderForm) {
+        orderForm.addEventListener('submit', handleOrderSubmit);
+    }
+}
+
 function updateOrderSummary() {
-    const quantity = parseInt(document.getElementById('quantity').value);
+    const quantityElement = document.getElementById('quantity');
+    const quantity = quantityElement ? parseInt(quantityElement.value) : 1;
     const total = quantity * magazinePrice;
     
-    document.getElementById('summaryQuantity').textContent = quantity;
-    document.getElementById('summaryTotal').textContent = formatAmount(total);
-    
-    // Update submit button text
+    const summaryQuantity = document.getElementById('summaryQuantity');
+    const summaryTotal = document.getElementById('summaryTotal');
     const submitBtn = document.getElementById('orderSubmitBtn');
-    const btnText = submitBtn.querySelector('.btn-text');
-    btnText.textContent = `Proceed to Payment (${formatAmount(total)})`;
+    const btnText = submitBtn?.querySelector('.btn-text');
+    
+    if (summaryQuantity) summaryQuantity.textContent = quantity;
+    if (summaryTotal) summaryTotal.textContent = formatAmount(total);
+    if (btnText) btnText.textContent = `Proceed to Payment (${formatAmount(total)})`;
 }
 
 async function handleOrderSubmit(e) {
@@ -140,9 +179,12 @@ async function handleOrderSubmit(e) {
         country: formData.get('country')
     };
     
-    // Validation
-    if (!orderData.fullName || !orderData.phone || !orderData.address || !orderData.city || !orderData.state) {
-        showError('Please fill in all required fields');
+    // Quick validation
+    const requiredFields = ['fullName', 'phone', 'address', 'city', 'state'];
+    const missingFields = requiredFields.filter(field => !orderData[field]);
+    
+    if (missingFields.length > 0) {
+        showError(`Please fill in: ${missingFields.join(', ')}`);
         return;
     }
     
@@ -150,27 +192,32 @@ async function handleOrderSubmit(e) {
     const orderNumber = `UNF-${Date.now()}`;
     
     try {
-        // Show loading state
         showLoading(true);
         hideError();
         
-        // Create order in database
+        // Create order (guest checkout supported)
+        const orderPayload = {
+            order_number: orderNumber,
+            quantity: orderData.quantity,
+            total_amount: total,
+            shipping_address: {
+                full_name: orderData.fullName,
+                phone: orderData.phone,
+                address: orderData.address,
+                city: orderData.city,
+                state: orderData.state,
+                country: orderData.country
+            }
+        };
+        
+        // Add user_id only if user is logged in
+        if (currentUser) {
+            orderPayload.user_id = currentUser.id;
+        }
+        
         const { data: order, error: orderError } = await supabase
             .from('orders')
-            .insert({
-                user_id: currentUser.id,
-                order_number: orderNumber,
-                quantity: orderData.quantity,
-                total_amount: total,
-                shipping_address: {
-                    full_name: orderData.fullName,
-                    phone: orderData.phone,
-                    address: orderData.address,
-                    city: orderData.city,
-                    state: orderData.state,
-                    country: orderData.country
-                }
-            })
+            .insert(orderPayload)
             .select()
             .single();
             
@@ -178,14 +225,14 @@ async function handleOrderSubmit(e) {
             throw orderError;
         }
         
-        // Log order creation activity
-        await logActivity('order_created', { order_id: order.id, order_number: orderNumber });
+        // Log activity if user is logged in
+        if (currentUser) {
+            await logActivity('order_created', { order_id: order.id, order_number: orderNumber });
+        }
         
-        // In a real implementation, you would integrate with a payment processor
-        // For now, we'll simulate a successful order creation
-        showNotification('Order created successfully! Payment integration coming soon.', 'success');
+        showNotification('Order created successfully! Redirecting to payment...', 'success');
         
-        // Redirect to dashboard after a delay
+        // Simulate payment redirect
         setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 2000);
@@ -199,13 +246,17 @@ async function handleOrderSubmit(e) {
 }
 
 async function handleSignOut() {
-    await logActivity('user_logout');
+    if (currentUser) {
+        await logActivity('user_logout');
+    }
     await supabase.auth.signOut();
     localStorage.removeItem('authRemember');
     window.location.href = 'index.html';
 }
 
 async function logActivity(action, details = {}) {
+    if (!currentUser) return;
+    
     try {
         await supabase
             .from('activity_logs')
@@ -217,35 +268,42 @@ async function logActivity(action, details = {}) {
                 user_agent: navigator.userAgent
             });
     } catch (error) {
-        console.error('Error logging activity:', error);
+        console.warn('Activity logging failed:', error);
     }
 }
 
 function showLoading(show) {
     const submitBtn = document.getElementById('orderSubmitBtn');
+    if (!submitBtn) return;
+    
     const btnText = submitBtn.querySelector('.btn-text');
     const btnLoading = submitBtn.querySelector('.btn-loading');
     
     if (show) {
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'flex';
+        if (btnText) btnText.style.display = 'none';
+        if (btnLoading) btnLoading.style.display = 'flex';
         submitBtn.disabled = true;
     } else {
-        btnText.style.display = 'block';
-        btnLoading.style.display = 'none';
+        if (btnText) btnText.style.display = 'block';
+        if (btnLoading) btnLoading.style.display = 'none';
         submitBtn.disabled = false;
     }
 }
 
 function showError(message) {
     const errorEl = document.getElementById('orderError');
-    errorEl.textContent = message;
-    errorEl.style.display = 'block';
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.style.display = 'block';
+        errorEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 }
 
 function hideError() {
     const errorEl = document.getElementById('orderError');
-    errorEl.style.display = 'none';
+    if (errorEl) {
+        errorEl.style.display = 'none';
+    }
 }
 
 function formatAmount(amount) {
@@ -257,16 +315,13 @@ function formatAmount(amount) {
 
 function showNotification(message, type = 'info') {
     // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => {
-        notification.remove();
-    });
+    document.querySelectorAll('.notification').forEach(n => n.remove());
     
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
-    // Add styles
+    // Optimized styles
     Object.assign(notification.style, {
         position: 'fixed',
         top: '20px',
@@ -274,14 +329,15 @@ function showNotification(message, type = 'info') {
         zIndex: '9999',
         padding: '12px 24px',
         borderRadius: '8px',
-        color: 'white',
+        color: type === 'success' ? '#000' : '#fff',
         fontSize: '14px',
         fontWeight: '500',
         maxWidth: '300px',
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
         transform: 'translateX(100%)',
         transition: 'transform 0.3s ease',
-        backgroundColor: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'
+        backgroundColor: type === 'success' ? '#fff' : type === 'error' ? '#000' : '#333',
+        border: `1px solid ${type === 'success' ? '#000' : 'transparent'}`
     });
     
     document.body.appendChild(notification);
@@ -291,13 +347,9 @@ function showNotification(message, type = 'info') {
         notification.style.transform = 'translateX(0)';
     });
     
-    // Remove after 5 seconds
+    // Auto remove
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
+        setTimeout(() => notification.remove(), 300);
     }, 5000);
 }

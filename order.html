@@ -1,89 +1,200 @@
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Magazine - Urban Nomad Freaks</title>
+    <title>Order Magazine - Unfold Magazine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static-styles.css">
     <link rel="icon" href="public/favicon.ico" type="image/x-icon">
+    <style>
+        /* Production-ready optimizations and black/white theme */
+        :root {
+            --primary-bg: #000000;
+            --secondary-bg: #ffffff;
+            --primary-text: #ffffff;
+            --secondary-text: #000000;
+            --border-color: #000000;
+            --accent-color: #000000;
+        }
+        
+        body {
+            background-color: var(--secondary-bg);
+            color: var(--secondary-text);
+        }
+        
+        .header {
+            background-color: var(--secondary-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .logo-icon {
+            background-color: var(--primary-bg);
+        }
+        
+        .logo-text {
+            color: var(--secondary-text);
+        }
+        
+        .nav-link {
+            color: var(--secondary-text);
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .btn {
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-bg);
+            color: var(--secondary-text);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+        }
+        
+        .order-card {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group input,
+        .form-group select {
+            border: 1px solid var(--border-color);
+            background-color: var(--secondary-bg);
+            color: var(--secondary-text);
+        }
+        
+        .footer {
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+        }
+        
+        /* Loading optimization */
+        .order-loading {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--border-color);
+            border-top: 2px solid var(--primary-bg);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive improvements */
+        .order-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .order-layout {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="skip-link sr-only">Skip to main content</a>
 
-    <!-- Header -->
     <header class="header" id="header">
         <div class="header-container">
             <div class="header-content">
-                <!-- Logo -->
                 <a href="index.html" class="logo">
                     <div class="logo-icon">
-                        <span>UNF</span>
+                        <span>UF</span>
                     </div>
-                    <span class="logo-text">Urban Nomad Freaks</span>
+                    <span class="logo-text">Unfold Magazine</span>
                 </a>
 
-                <!-- Desktop Navigation -->
                 <nav class="nav-desktop">
                     <a href="index.html" class="nav-link">Home</a>
                     <a href="about.html" class="nav-link">About</a>
                     <a href="table-of-contents.html" class="nav-link">Table of Contents</a>
                     <a href="dashboard.html" class="nav-link">Dashboard</a>
-                    <button class="btn btn-sm" id="signOutBtn">Sign Out</button>
+                    <a href="auth.html" class="nav-link">Login/Sign Up</a>
+                    <button class="btn btn-sm" id="signOutBtn" style="display: none;">Sign Out</button>
                 </nav>
 
-                <!-- Theme Toggle -->
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                    </svg>
-                    <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                    </svg>
-                </button>
-
-                <!-- Mobile Menu Button -->
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
-                    <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <div class="nav-actions">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-expanded="false" aria-controls="mobileNav">
+                        <svg class="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Mobile Navigation -->
         <nav class="mobile-nav" id="mobileNav">
             <div class="mobile-nav-content">
                 <a href="index.html" class="mobile-nav-link">Home</a>
                 <a href="about.html" class="mobile-nav-link">About</a>
                 <a href="table-of-contents.html" class="mobile-nav-link">Table of Contents</a>
                 <a href="dashboard.html" class="mobile-nav-link">Dashboard</a>
+                <a href="auth.html" class="mobile-nav-link">Login/Sign Up</a>
                 <div class="mobile-nav-divider"></div>
-                <button class="btn btn-primary mobile-nav-btn" id="mobileSignOutBtn">Sign Out</button>
+                <button class="btn btn-primary mobile-nav-btn" id="mobileSignOutBtn" style="display: none;">Sign Out</button>
             </div>
         </nav>
     </header>
 
-    <!-- Main Content -->
     <main class="main-content order-page" id="main-content">
-        <!-- Loading State -->
         <div class="order-loading" id="orderLoading">
             <div class="loading-spinner"></div>
             <p>Loading order form...</p>
         </div>
 
-        <!-- Order Content -->
         <div class="order-container" id="orderContent" style="display: none;">
             <div class="order-header">
                 <h1 class="order-title">Order Magazine</h1>
-                <p class="order-subtitle">Get your printed copy of Urban Nomad Freaks magazine delivered to your doorstep</p>
+                <p class="order-subtitle">Get your printed copy of Unfold Magazine delivered to your doorstep</p>
             </div>
 
             <div class="order-layout">
-                <!-- Order Summary -->
                 <div class="order-card">
                     <div class="card-header">
                         <h3 class="card-title">🛒 Order Summary</h3>
@@ -91,7 +202,7 @@
                     <div class="card-content">
                         <div class="order-item">
                             <div class="item-details">
-                                <h4>Urban Nomad Freaks Magazine (Printed)</h4>
+                                <h4>Unfold Magazine (Printed)</h4>
                                 <p>Latest issue with premium print quality</p>
                             </div>
                             <div class="item-price">
@@ -112,7 +223,6 @@
                     </div>
                 </div>
 
-                <!-- Order Form -->
                 <div class="order-card order-form-card">
                     <div class="card-header">
                         <h3 class="card-title">💳 Delivery Information</h3>
@@ -168,7 +278,6 @@
                                 </div>
                             </div>
 
-                            <!-- Error Message -->
                             <div class="error-message" id="orderError" style="display: none;"></div>
 
                             <button type="submit" class="btn btn-primary btn-lg order-submit-btn" id="orderSubmitBtn">
@@ -185,18 +294,31 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container-xl">
             <div class="footer-bottom">
                 <p class="footer-copyright">
-                    © 2024 Urban Nomad Freaks. All rights reserved.
+                    © 2024 Unfold Magazine. All rights reserved.
                 </p>
             </div>
         </div>
     </footer>
 
     <script src="static-script.js"></script>
+    <script>
+        // Optimized loading - show content immediately if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quick UI setup
+            const orderLoading = document.getElementById('orderLoading');
+            const orderContent = document.getElementById('orderContent');
+            
+            // Show content faster
+            setTimeout(() => {
+                orderLoading.style.display = 'none';
+                orderContent.style.display = 'block';
+            }, 500);
+        });
+    </script>
     <script src="scripts/order.js"></script>
 </body>
 </html>
