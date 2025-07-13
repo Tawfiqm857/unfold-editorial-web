@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "./ui/button";
@@ -32,7 +33,7 @@ const Header = () => {
             <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">UNF</span>
             </div>
-            <span className="font-bold text-xl text-gray-900">Urban Nomad Freaks</span>
+            <span className="font-bold text-xl text-gray-900">Unfold Magazine</span>
           </Link>
 
           {/* Desktop Navigation */}

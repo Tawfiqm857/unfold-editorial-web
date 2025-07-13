@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Magazine Platform</title>
+    <title>Dashboard - Unfold Magazine</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
     /* Reset and Base Styles */
@@ -538,6 +538,32 @@ body {
 
 </head>
 <body>
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200" style="backdrop-filter: blur(10px); border-bottom: 1px solid rgba(229, 231, 235, 1);">
+        <div style="max-width: 80rem; margin: 0 auto; padding: 0 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; height: 4rem;">
+                <!-- Logo -->
+                <a href="/" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                    <div style="width: 2rem; height: 2rem; background: black; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: white; font-weight: bold; font-size: 0.875rem;">UNF</span>
+                    </div>
+                    <span style="font-weight: bold; font-size: 1.25rem; color: #1a202c;">Unfold Magazine</span>
+                </a>
+
+                <!-- Navigation -->
+                <nav style="display: flex; align-items: center; gap: 2rem;">
+                    <a href="/" style="text-decoration: none; color: #374151; font-weight: 500; transition: color 0.2s;">Home</a>
+                    <a href="/about.html" style="text-decoration: none; color: #374151; font-weight: 500; transition: color 0.2s;">About</a>
+                    <a href="/table-of-contents.html" style="text-decoration: none; color: #374151; font-weight: 500; transition: color 0.2s;">Table of Contents</a>
+                    <button id="header-sign-out-btn" class="btn btn-outline" style="margin-left: 1rem;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Sign Out
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
     <!-- Loading Screen -->
     <div id="loading" class="loading-screen">
         <div class="loading-content">
@@ -547,8 +573,8 @@ body {
     </div>
 
     <!-- Main Dashboard -->
-    <div id="dashboard" class="dashboard hidden">
-        <!-- Header -->
+    <div id="dashboard" class="dashboard hidden" style="padding-top: 5rem;">
+        <!-- Dashboard Header -->
         <header class="dashboard-header">
             <div class="header-content">
                 <div class="header-info">
@@ -815,6 +841,100 @@ body {
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer style="background: rgba(243, 244, 246, 0.3); border-top: 1px solid rgba(229, 231, 235, 1); margin-top: 4rem;">
+        <div style="max-width: 80rem; margin: 0 auto; padding: 4rem 1rem;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <!-- Logo and About -->
+                <div>
+                    <a href="/" style="display: inline-block; text-decoration: none; margin-bottom: 1rem;">
+                        <h2 style="font-size: 2rem; font-family: serif; font-weight: 600; letter-spacing: -0.025em; margin: 0;">
+                            Unfold<span style="color: rgba(107, 114, 128, 0.6);">.</span>
+                        </h2>
+                    </a>
+                    <p style="color: #6b7280; font-size: 0.875rem; max-width: 20rem; line-height: 1.5; margin: 0;">
+                        A modern digital magazine covering culture, business, lifestyle, creators, and insights for the curious mind.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 style="font-weight: 500; margin-bottom: 1rem; color: #1a202c;">Explore</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/category/culture" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Culture</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/category/business" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Business</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/category/lifestyle" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Lifestyle</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/category/creators" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Creators</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/category/insights" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Insights</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h3 style="font-weight: 500; margin-bottom: 1rem; color: #1a202c;">Company</h3>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/about.html" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">About Us</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/contact" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Contact</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="https://issuu.com/" target="_blank" rel="noopener noreferrer" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Print Edition</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/privacy" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Privacy Policy</a>
+                        </li>
+                        <li style="margin-bottom: 0.5rem;">
+                            <a href="/terms" style="font-size: 0.875rem; color: #6b7280; text-decoration: none; transition: color 0.2s;">Terms of Service</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h3 style="font-weight: 500; margin-bottom: 1rem; color: #1a202c;">Stay Connected</h3>
+                    <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem; line-height: 1.5;">
+                        Get the latest articles and features delivered to your inbox.
+                    </p>
+                    
+                    <!-- Social Links -->
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" aria-label="Twitter" style="color: #6b7280; transition: color 0.2s;">
+                            <i class="fab fa-twitter" style="font-size: 1.25rem;"></i>
+                        </a>
+                        <a href="#" aria-label="Facebook" style="color: #6b7280; transition: color 0.2s;">
+                            <i class="fab fa-facebook" style="font-size: 1.25rem;"></i>
+                        </a>
+                        <a href="#" aria-label="Instagram" style="color: #6b7280; transition: color 0.2s;">
+                            <i class="fab fa-instagram" style="font-size: 1.25rem;"></i>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" style="color: #6b7280; transition: color 0.2s;">
+                            <i class="fab fa-linkedin" style="font-size: 1.25rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem; border-top: 1px solid rgba(229, 231, 235, 1); padding-top: 1.5rem;">
+                <p style="font-size: 0.875rem; color: #6b7280; text-align: center; margin: 0;">
+                    © 2025 Unfold Magazine. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <!-- Load Supabase Scripts -->
     <script type="module" src="./scripts/dashboard.js"></script>
     <script type="module">
@@ -960,6 +1080,26 @@ body {
                     }, 300);
                 }, 3000);
             }
+        });
+
+        // Add header sign out functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerSignOutBtn = document.getElementById('header-sign-out-btn');
+            const dashboardSignOutBtn = document.getElementById('sign-out-btn');
+            
+            async function handleSignOut() {
+                try {
+                    const { supabase } = await import('./scripts/dashboard-config.js');
+                    await supabase.auth.signOut();
+                    window.location.href = '/auth.html';
+                } catch (error) {
+                    console.error('Sign out error:', error);
+                    window.location.href = '/auth.html';
+                }
+            }
+            
+            headerSignOutBtn?.addEventListener('click', handleSignOut);
+            dashboardSignOutBtn?.addEventListener('click', handleSignOut);
         });
     </script>
 </body>
